@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Glooory on 2016/9/29 0029 15:02.
  */
 
-public class RerofitHelpler {
+public class RetrofitHelpler {
 
     private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
@@ -43,7 +43,7 @@ public class RerofitHelpler {
         }
     };
 
-    public static volatile RerofitHelpler rerofitHelpler;
+    public static volatile RetrofitHelpler retrofitHelpler;
     private static File httpCacheDirectory = new File(MyApplication.getInstance().getCacheDir(), "ribaocache");
     private static int cacheSize = 20 * 1024 * 1024;
     private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
@@ -55,15 +55,15 @@ public class RerofitHelpler {
 
     public volatile RibaoApi ribaoApi;
 
-    public static RerofitHelpler getInstance() {
-        if (rerofitHelpler == null) {
-            synchronized (RerofitHelpler.class) {
-                if (rerofitHelpler == null) {
-                    rerofitHelpler = new RerofitHelpler();
+    public static RetrofitHelpler getInstance() {
+        if (retrofitHelpler == null) {
+            synchronized (RetrofitHelpler.class) {
+                if (retrofitHelpler == null) {
+                    retrofitHelpler = new RetrofitHelpler();
                 }
             }
         }
-        return rerofitHelpler;
+        return retrofitHelpler;
     }
 
     public RibaoApi getRibaoService() {

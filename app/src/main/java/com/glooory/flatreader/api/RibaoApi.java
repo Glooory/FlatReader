@@ -1,12 +1,12 @@
 package com.glooory.flatreader.api;
 
-import android.database.Observable;
 
 import com.glooory.flatreader.entity.ribao.RibaoIStoriesBean;
 import com.glooory.flatreader.entity.ribao.RibaoStoryContentBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import rx.Observable;
 
 /**
  * Created by Glooory on 2016/9/29 0029 14:52.

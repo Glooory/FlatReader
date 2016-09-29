@@ -77,6 +77,8 @@ public class FrescoLoader {
             dataSource.subscribe(builder.mBitmapDataSubscriber, CallerThreadExecutor.getInstance());
         }
 
+        mSimpleDraweeView.setHierarchy(builderM.build());
+        mSimpleDraweeView.setController(draweeController);
     }
 
     /**

@@ -18,9 +18,7 @@ public class BasePresenterImpl implements BasePresenter {
     }
 
     @Override
-    public void unSubscribe() {
-        if (this.mCompositeSubscription != null) {
-            this.mCompositeSubscription.unsubscribe();
-        }
+    public void detachView() {
+
     }
 }

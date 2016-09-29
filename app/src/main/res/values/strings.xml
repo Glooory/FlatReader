@@ -5,4 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="nav_ribao_title">知乎日报</string>
+    <string name="nav_news_title">网易头条</string>
+    <string name="nav_it_title">IT 之家</string>
 </resources>
