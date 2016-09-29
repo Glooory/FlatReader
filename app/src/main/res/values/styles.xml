@@ -14,4 +14,12 @@
         <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
         <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ribao_item_title_style">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
 </resources>
