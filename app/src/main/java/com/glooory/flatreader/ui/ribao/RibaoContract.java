@@ -16,12 +16,14 @@ public interface RibaoContract {
 
         void setNewStoryData(List<RibaoStoryBean> storyList);
 
-//        void addStoryData(List<RibaoStoryBean> storyList);
+        void addStoryData(List<RibaoStoryBean> storyList);
 
     }
 
     interface  Presenter extends BasePresenter{
-        void getStoriesFirst();
+        void getLatestStories();
+
+        void getPastStories();
 //
 //        void getLatest();
 //

@@ -12,29 +12,45 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
+import com.glooory.flatreader.callback.OnSectionChangeListener;
 import com.glooory.flatreader.ui.ribao.RibaoContract;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
 import com.glooory.flatreader.ui.ribao.RibaoPresenter;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private DrawerLayout mDrawer;
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnSectionChangeListener{
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.nav_view)
+    NavigationView mNavView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+        initView();
+        initRibaoUI();
+    }
+
+    private void initView() {
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.title_ribao_latest);
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mNavView.setNavigationItemSelectedListener(this);
+        mNavView.getMenu().getItem(0).setChecked(true); //默认选中第一个选项
     }
 
     @Override
@@ -75,13 +91,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ribao) {
-            Fragment fragment = RibaoFragment.newInstance();
-            new RibaoPresenter((RibaoContract.View) fragment);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_main, fragment).commit();
+            initRibaoUI();
         }
 
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void initRibaoUI() {
+        Fragment fragment = RibaoFragment.newInstance();
+        new RibaoPresenter((RibaoContract.View) fragment);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_main, fragment).commit();
+    }
+
+    @Override
+    public void onSectionChange(String sectionTitle) {
+        getSupportActionBar().setTitle(sectionTitle);
     }
 }

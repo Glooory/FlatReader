@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
@@ -40,17 +41,18 @@ public class FrescoLoader {
         //初始化M层， 用于初始化图片中包含的数据
         GenericDraweeHierarchyBuilder builderM = new GenericDraweeHierarchyBuilder(mContext.getResources());
 
-        //请求参数， 主要配置url 和C层相关
+        //请求参数， 主要配置url和C层相关
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(builder.mUrl))
-                .setProgressiveRenderingEnabled(true);  //设置渐进式加载
-        if (builder.mResizeOptions != null) {
-            imageRequestBuilder.setResizeOptions(builder.mResizeOptions);
+//                .setResizeOptions(builder.mResizeOption)
+                .setProgressiveRenderingEnabled(true);//设置渐进式加载
+        if (builder.mResizeOption != null) {
+            imageRequestBuilder.setResizeOptions(builder.mResizeOption);
         }
 
         ImageRequest request = imageRequestBuilder.build();
 
-        //初始化C层， 用于控制图片的加载， 是主要的实现控制类
+        //初始化C层， 用于控制图片的加载  是主要的实现控制类
         PipelineDraweeControllerBuilder builderC = Fresco.newDraweeControllerBuilder();
 
         if (builder.mUrlLow != null) {
@@ -70,10 +72,10 @@ public class FrescoLoader {
         DraweeController draweeController = builderC.build();
 
         if (builder.mBitmapDataSubscriber != null) {
-            ImagePipeline imagePipeline = Fresco.getImagePipeline();
+            ImagePipeline imagePipline = Fresco.getImagePipeline();
 
             DataSource<CloseableReference<CloseableImage>> dataSource =
-                    imagePipeline.fetchDecodedImage(request, mSimpleDraweeView.getContext());
+                    imagePipline.fetchDecodedImage(request, mSimpleDraweeView.getContext());
             dataSource.subscribe(builder.mBitmapDataSubscriber, CallerThreadExecutor.getInstance());
         }
 
@@ -83,27 +85,26 @@ public class FrescoLoader {
 
     /**
      * 配置DraweeView的各种表现效果
-     * 如 失败图、 重试图、圆角等
+     * 如  失败图  重试图  圆角或圆形
      * @param builder
      * @param builderM
      * @param builderC
      */
     private void setViewPerformance(Builder builder, GenericDraweeHierarchyBuilder builderM, PipelineDraweeControllerBuilder builderC) {
 
-        //设置图片的缩放方式
-        builderM.setActualImageScaleType(builder.mScaleType);
-
-        if (builder.mScaleType == ScalingUtils.ScaleType.FOCUS_CROP) {
+        //设置图片的缩放形式
+        builderM.setActualImageScaleType(builder.mSacleType);
+        if (builder.mSacleType == ScalingUtils.ScaleType.FOCUS_CROP) {
             builderM.setActualImageFocusPoint(new PointF(0f, 0f));
         }
 
         if (builder.mPlaceHolderImg != null) {
-            builderM.setPlaceholderImage(builder.mPlaceHolderImg);
+            builderM.setPlaceholderImage(builder.mPlaceHolderImg, ScalingUtils.ScaleType.CENTER);
         }
 
         if (builder.mProgressBarImg != null) {
-            Drawable progerssbarDrawable = new AutoRotateDrawable(builder.mProgressBarImg, 2000);
-            builderM.setProgressBarImage(progerssbarDrawable);
+            Drawable progressbarDrawable = new AutoRotateDrawable(builder.mProgressBarImg, 2000);
+            builderM.setProgressBarImage(progressbarDrawable);
         }
 
         if (builder.mRetryImg != null) {
@@ -120,6 +121,7 @@ public class FrescoLoader {
         }
 
         if (builder.mIsCircle) {
+
             if (builder.mIsBorder) {
                 //默认白色包边
                 builderM.setRoundingParams(RoundingParams.asCircle().setBorder(0xFFFFFFFF, 2));
@@ -138,25 +140,27 @@ public class FrescoLoader {
         private Context mContext;
         private SimpleDraweeView mSimpleDraweeView;
         private String mUrl;
-        private String mUrlLow; // 低分辨率的图片地址
 
-        private Drawable mPlaceHolderImg;  //占位图
-        private Drawable mRetryImg;  //重试图
-        private Drawable mProgressBarImg; // 进度图
-        private Drawable mFailureImg; // 失败图
-        private Drawable mBackgroundImg; // 背景图
+        private String mUrlLow;//低分辨率图片地址
 
-        //缩放方式， 默认是center_crop
-        private ScalingUtils.ScaleType mScaleType = ScalingUtils.ScaleType.CENTER_CROP;
-        private boolean mIsCircle = false;  //是否是圆形图片
-        private boolean mIsRadius = false;  //是否为圆角
-        private boolean mIsBorder = false;  //是否有包边
+        private Drawable mPlaceHolderImg;//占位图
+        private Drawable mProgressBarImg;//loading图
+        private Drawable mRetryImg;//重试图
+        private Drawable mFailureImg;//失败图
+        private Drawable mBackgroundImg;//背景图
+
+        private ScalingUtils.ScaleType mSacleType = ScalingUtils.ScaleType.CENTER_CROP;
+        private boolean mIsCircle = false; //是否是圆形图片
+        private boolean mIsRadius = false; //是否有圆角
+        private boolean mIsBorder = false; //是否有包边
         private float mRadius = 5; //默认的圆角半径
-        private ResizeOptions mResizeOptions;
+        private ResizeOptions mResizeOption;
 
-        private ControllerListener mControllerListener;  //图片加载的回调
+        private ControllerListener mControllerListener; //图片加载的回调
+
         private BaseBitmapDataSubscriber mBitmapDataSubscriber;
 
+        //Construtor
         public Builder(Context context, SimpleDraweeView simpleDraweeView, String url) {
             this.mContext = context;
             this.mSimpleDraweeView = simpleDraweeView;
@@ -164,16 +168,15 @@ public class FrescoLoader {
         }
 
         public FrescoLoader build() {
-            //图片不能同时设置为圆形和圆角矩形
+            //图片不能同时设置成圆形和带圆角的
             if (mIsCircle && mIsRadius) {
-                throw new IllegalArgumentException("you cannot set the image circle and radius at the same time");
+                throw new IllegalArgumentException("you cannot set the image circle or radius at the same time");
             }
-
             return new FrescoLoader(this);
         }
 
-        public Builder setBitmapDataSubscriber(BaseBitmapDataSubscriber bitmapDataSubscriber) {
-            this.mBitmapDataSubscriber = bitmapDataSubscriber;
+        public Builder setBitmapDataSubscriber(BaseBitmapDataSubscriber subscriber) {
+            this.mBitmapDataSubscriber = subscriber;
             return this;
         }
 
@@ -182,33 +185,39 @@ public class FrescoLoader {
             return this;
         }
 
-        public Builder setPlaceHolderImg(Drawable placeHolderImg) {
-            this.mPlaceHolderImg = placeHolderImg;
+        public Builder setActualImageScaleType(ScalingUtils.ScaleType scaleType) {
+            this.mSacleType = scaleType;
             return this;
         }
 
-        public Builder setRetryImg(Drawable retryImg) {
-            this.mRetryImg = retryImg;
+        public Builder setPlaceHolderImage(Drawable placeHolder) {
+            this.mPlaceHolderImg = placeHolder;
             return this;
         }
 
-        public Builder setProgressBarImg(Drawable progressBarImg) {
-            this.mProgressBarImg = progressBarImg;
+        public Builder setProgressbarImage(Drawable progressbarImage) {
+            this.mProgressBarImg = progressbarImage;
             return this;
         }
 
-        public Builder setFailureImg(Drawable failureImg) {
-            this.mFailureImg = failureImg;
+        public Builder setRetryImage(Drawable retryImage) {
+            this.mRetryImg = retryImage;
             return this;
         }
 
-        public Builder setBackgroundImg(Drawable backgroundImg) {
-            this.mBackgroundImg = backgroundImg;
+        public Builder setFailureIamge(Drawable failureIamge) {
+            this.mFailureImg = failureIamge;
             return this;
         }
 
-        public Builder setScaleType(ScalingUtils.ScaleType scaleType) {
-            this.mScaleType = scaleType;
+        public Builder setBackgroundImage(Drawable backgroundImage) {
+            this.mBackgroundImg = backgroundImage;
+            return this;
+        }
+
+        public Builder setBackgroundImageColor(int colorId) {
+            Drawable color = ContextCompat.getDrawable(mContext, colorId);
+            this.mBackgroundImg = color;
             return this;
         }
 
@@ -217,7 +226,7 @@ public class FrescoLoader {
             return this;
         }
 
-        public Builder setCircle(boolean isCircle, boolean isBorder) {
+        public Builder setIsCircle(boolean isCircle, boolean isBorder) {
             this.mIsCircle = isCircle;
             this.mIsBorder = isBorder;
             return this;
@@ -228,24 +237,28 @@ public class FrescoLoader {
             return this;
         }
 
-        public Builder setIsRadius(boolean isRadius, int radius) {
-            this.mIsRadius = isRadius;
+        public Builder setIsRadius(boolean isRadius, float radius) {
+            this.mRadius = radius;
+            return setIsRadius(isRadius);
+        }
+
+        public Builder setRadius(float radius) {
             this.mRadius = radius;
             return this;
         }
 
-        public Builder setRadius(int radius) {
-            this.mRadius = radius;
+        public Builder setResizeOptions(ResizeOptions resizeOptions) {
+            this.mResizeOption = resizeOptions;
             return this;
         }
 
-        public Builder setResizeOption(ResizeOptions resizeOption) {
-            this.mResizeOptions = resizeOption;
+        public Builder setControllerListenrr(ControllerListener listenrr) {
+            this.mControllerListener = listenrr;
             return this;
         }
 
-        public Builder setControllerListener(ControllerListener controllerListener) {
-            this.mControllerListener = controllerListener;
+        public Builder setScaleType(ScalingUtils.ScaleType scaleType) {
+            this.mSacleType = scaleType;
             return this;
         }
     }

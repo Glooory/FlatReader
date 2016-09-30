@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_section_header_ribao"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:background="@color/transparent"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
+    android:textColor="@color/colorSecondaryText"
+    android:textSize="14sp">
+
+</TextView>

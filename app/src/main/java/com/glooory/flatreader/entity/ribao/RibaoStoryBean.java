@@ -1,6 +1,6 @@
 package com.glooory.flatreader.entity.ribao;
 
-import com.google.gson.Gson;
+import com.chad.library.adapter.base.entity.SectionEntity;
 
 import java.util.List;
 
@@ -9,25 +9,45 @@ import java.util.List;
  * 知乎日报的日报Story实体类
  */
 
-public class RibaoStoryBean {
-
+public class RibaoStoryBean extends SectionEntity {
     /**
-     * image : http://pic4.zhimg.com/d96abdb5bb61859332aaf3e593f65eff.jpg
+     * images : ["http://pic2.zhimg.com/7b2ea76fbdf40f866b043b989204e111.jpg"]
+     * multipic : true
      * type : 0
-     * id : 8836412
-     * ga_prefix : 092808
-     * title : 给你卡拿去刷，因为银行用信用卡赚钱的方式太多了
+     * id : 8845106
+     * ga_prefix : 093016
+     * title : 咨询公司制订了特别厉害的战略，可是怎么执行才好
      */
-
+    private boolean multipic;
     private int type;
-    private String id;
+    private int id;
     private String ga_prefix;
     private String title;
+    private String date;
     private List<String> images;
 
-    public static RibaoStoryBean objectFromData(String str) {
+    public RibaoStoryBean(boolean isHeader, String header) {
+        super(isHeader, header);
+    }
 
-        return new Gson().fromJson(str, RibaoStoryBean.class);
+    public RibaoStoryBean(Object o) {
+        super(o);
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public boolean isMultipic() {
+        return multipic;
+    }
+
+    public void setMultipic(boolean multipic) {
+        this.multipic = multipic;
     }
 
     public int getType() {
@@ -38,11 +58,11 @@ public class RibaoStoryBean {
         this.type = type;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -69,5 +89,4 @@ public class RibaoStoryBean {
     public void setImages(List<String> images) {
         this.images = images;
     }
-
 }

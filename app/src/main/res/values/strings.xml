@@ -9,4 +9,7 @@
     <string name="nav_ribao_title">知乎日报</string>
     <string name="nav_news_title">网易头条</string>
     <string name="nav_it_title">IT 之家</string>
+
+    <string name="title_ribao_latest">今日热闻</string>
+    <string name="text_multipic">多图</string>
 </resources>

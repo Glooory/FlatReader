@@ -1,5 +1,6 @@
 package com.glooory.flatreader.ui.ribao;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
-import com.glooory.flatreader.adapter.RibaoAdapter;
+import com.glooory.flatreader.adapter.RibaoSectionAdapter;
 import com.glooory.flatreader.base.BaseFragment;
+import com.glooory.flatreader.callback.OnSectionChangeListener;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
+import com.glooory.flatreader.ui.MainActivity;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -24,33 +29,65 @@ import butterknife.ButterKnife;
  */
 
 public class RibaoFragment extends BaseFragment implements RibaoContract.View,
-        SwipeRefreshLayout.OnRefreshListener{
+        SwipeRefreshLayout.OnRefreshListener,
+        BaseQuickAdapter.RequestLoadMoreListener {
     private RecyclerView mRecyclerView;
     private SwipeRefreshLayout mSwipeLayout;
     private RibaoContract.Presenter mPresenter;
-    private RibaoAdapter mAdapter;
+    private RibaoSectionAdapter mAdapter;
+    private int mPageSize = 30; //用来触发Adapter上拉自动加载的关键字
+    private LinearLayoutManager mLinearLayoutManager;
+    private String mCurrentTitle;
+    private OnSectionChangeListener mSectionListener;
 
     public static RibaoFragment newInstance() {
         return new RibaoFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof MainActivity) {
+            mSectionListener = (OnSectionChangeListener) context;
+        }
+        mCurrentTitle = context.getString(R.string.title_ribao_latest);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mSwipeLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.view_swipe_recycler, container, false);
-        mSwipeLayout.setOnRefreshListener(this);
-        mRecyclerView = ButterKnife.findById(mSwipeLayout, R.id.recycler);
-        initAdapter();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setAdapter(mAdapter);
-        mPresenter.getStoriesFirst();
+        initView();
+        mPresenter.getLatestStories();
         return mSwipeLayout;
     }
 
+    private void initView() {
+        mSwipeLayout.setColorSchemeColors(mContext.getResources().getColor(R.color.red_g_i), mContext.getResources().getColor(R.color.green_g_i),
+                mContext.getResources().getColor(R.color.blue_g_i), mContext.getResources().getColor(R.color.yellow_g_i));
+        mSwipeLayout.setOnRefreshListener(this);
+        mRecyclerView = ButterKnife.findById(mSwipeLayout, R.id.recycler);
+        mLinearLayoutManager = new LinearLayoutManager(mContext);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        initAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+
+    }
+
     private void initAdapter() {
-        mAdapter = new RibaoAdapter(mContext);
+        mAdapter = new RibaoSectionAdapter(mContext);
 
+        //正在加载的footer
+        View loadingFooter = LayoutInflater.from(mContext).inflate(R.layout.view_loading_footer, mRecyclerView, false);
+        mAdapter.setLoadingView(loadingFooter);
 
+        mAdapter.setOnLoadMoreListener(this);
+        mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
+            @Override
+            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                // TODO: 2016/9/30 0030 launch StoryDetailActivity
+            }
+        });
     }
 
     @Override
@@ -74,12 +111,40 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
     }
 
     @Override
-    public void setNewStoryData(List<RibaoStoryBean> storyList) {
+    public void setNewStoryData(final List<RibaoStoryBean> storyList) {
+        mPageSize = storyList.size();
+        mAdapter.openLoadMore(mPageSize);
         mAdapter.setNewData(storyList);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                //改变Toolbar的title为当前内容所属于的日期
+                int firstVisiblePosition = mLinearLayoutManager.findFirstVisibleItemPosition();
+                if (!mCurrentTitle.equals(((RibaoStoryBean) mAdapter.getItem(firstVisiblePosition)).getDate())) {
+                    mCurrentTitle = ((RibaoStoryBean) mAdapter.getItem(firstVisiblePosition)).getDate();
+                    if (mSectionListener != null) {
+                        mSectionListener.onSectionChange(mCurrentTitle);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void addStoryData(List<RibaoStoryBean> storyList) {
+        mPageSize = storyList.size() - 1;
+        mAdapter.openLoadMore(mPageSize);
+        mAdapter.addData(storyList);
     }
 
     @Override
     public void onRefresh() {
-        mPresenter.getStoriesFirst();
+        mPresenter.getLatestStories();
+    }
+
+    @Override
+    public void onLoadMoreRequested() {
+        Logger.d("onLoa");
+        mPresenter.getPastStories();
     }
 }

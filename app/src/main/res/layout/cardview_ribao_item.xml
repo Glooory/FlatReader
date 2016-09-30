@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview_ribao_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/padding_default"
-    android:layout_marginTop="@dimen/padding_default_half"
-    android:layout_marginRight="@dimen/padding_default"
     android:layout_marginBottom="@dimen/padding_default_half"
+    android:layout_marginLeft="@dimen/padding_default"
+    android:layout_marginRight="@dimen/padding_default"
+    android:layout_marginTop="@dimen/padding_default_half"
     android:clickable="true"
     android:elevation="@dimen/z_card"
     android:foreground="?attr/selectableItemBackground">
@@ -19,21 +20,41 @@
         android:orientation="horizontal"
         android:padding="12dp">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/img_card_ribao_item"
-            android:layout_width="@dimen/ribao_item_image_width"
-            android:layout_height="@dimen/ribao_item_image_height"
-            android:layout_gravity="center_vertical"
-            fresco:placeholderImageScaleType="centerCrop"
-            fresco:viewAspectRatio="1.33" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/img_card_ribao_item"
+                android:layout_width="@dimen/ribao_item_image_width"
+                android:layout_height="@dimen/ribao_item_image_height"
+                fresco:placeholderImageScaleType="centerCrop"
+                fresco:viewAspectRatio="1.33" />
+
+            <TextView
+                android:id="@+id/tv_multipic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:background="@color/grey_a_900"
+                android:drawableLeft="@drawable/ic_multipic"
+                android:drawablePadding="4dp"
+                android:padding="2dp"
+                android:text="@string/text_multipic"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="invisible" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_ribao_item_title"
             style="@style/ribao_item_title_style"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
