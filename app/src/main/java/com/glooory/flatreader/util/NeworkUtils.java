@@ -8,9 +8,9 @@ import android.net.NetworkInfo;
  * Created by Glooory on 2016/9/29 0029 15:05.
  */
 
-public class NeworkUtil {
+public class NeworkUtils {
 
-    private NeworkUtil() {
+    private NeworkUtils() {
     }
 
     /**

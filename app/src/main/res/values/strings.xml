@@ -12,4 +12,6 @@
 
     <string name="title_ribao_latest">今日热闻</string>
     <string name="text_multipic">多图</string>
+
+    <string name="shared_imga_transition_name">img_tran</string>
 </resources>

@@ -18,7 +18,6 @@ import com.glooory.flatreader.base.BaseFragment;
 import com.glooory.flatreader.callback.OnSectionChangeListener;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.ui.MainActivity;
-import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -81,7 +80,6 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
         View loadingFooter = LayoutInflater.from(mContext).inflate(R.layout.view_loading_footer, mRecyclerView, false);
         mAdapter.setLoadingView(loadingFooter);
 
-        mAdapter.setOnLoadMoreListener(this);
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
@@ -96,18 +94,13 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
     }
 
     @Override
-    public void showProgressDialog() {
+    public void showProgress() {
         mSwipeLayout.setRefreshing(true);
     }
 
     @Override
-    public void hideProgressDialog() {
+    public void dismissProgress() {
         mSwipeLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void showError(String errorMessage) {
-        Logger.d(errorMessage);
     }
 
     @Override
@@ -115,6 +108,12 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
         mPageSize = storyList.size();
         mAdapter.openLoadMore(mPageSize);
         mAdapter.setNewData(storyList);
+        updateAdpaterParameters();
+
+    }
+
+    private void updateAdpaterParameters() {
+        mAdapter.setOnLoadMoreListener(this);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -144,7 +143,6 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
 
     @Override
     public void onLoadMoreRequested() {
-        Logger.d("onLoa");
         mPresenter.getPastStories();
     }
 }

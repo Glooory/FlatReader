@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by Glooory on 2016/9/30 0030 10:45.
  */
 
-public class DateUtil {
+public class DateUtils {
 
     /**
      * 获取指定日期是星期几

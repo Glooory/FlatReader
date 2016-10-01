@@ -8,10 +8,10 @@ public interface BaseView<T> {
 
     void setPresenter(T presenter);
 
-    void showProgressDialog();
+    void showProgress();
 
-    void hideProgressDialog();
+    void dismissProgress();
 
-    void showError(String errorMessage);
+//    void showError(String errorMessage);
 
 }

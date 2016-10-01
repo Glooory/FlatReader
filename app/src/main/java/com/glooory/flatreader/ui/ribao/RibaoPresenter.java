@@ -1,13 +1,15 @@
 package com.glooory.flatreader.ui.ribao;
 
+import android.content.Context;
+
 import com.glooory.flatreader.entity.ribao.RibaoIStoriesBean;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.net.RetrofitHelpler;
-import com.glooory.flatreader.util.DateUtil;
+import com.glooory.flatreader.net.SimpleSubscriber;
+import com.glooory.flatreader.util.DateUtils;
 
 import java.util.List;
 
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -21,8 +23,10 @@ public class RibaoPresenter implements RibaoContract.Presenter {
     private final RibaoContract.View mView;
     private String mTargetDate;
     private StringBuilder mSectionTitle;
+    private Context mContext;
 
-    public RibaoPresenter(RibaoContract.View view) {
+    public RibaoPresenter(Context context, RibaoContract.View view) {
+        this.mContext = context;
         this.mView = view;
         this.mView.setPresenter(this);
         mSectionTitle = new StringBuilder();
@@ -30,7 +34,7 @@ public class RibaoPresenter implements RibaoContract.Presenter {
 
     @Override
     public void getLatestStories() {
-        mView.showProgressDialog();
+        mView.showProgress();
         Subscription s = RetrofitHelpler.getInstance()
                 .getRibaoService()
                 .getLatest()
@@ -47,26 +51,32 @@ public class RibaoPresenter implements RibaoContract.Presenter {
                         return ribaoStoryBeen.size() > 0;
                     }
                 })
+                .map(new Func1<List<RibaoStoryBean>, List<RibaoStoryBean>>() {
+                    @Override
+                    public List<RibaoStoryBean> call(List<RibaoStoryBean> storyBeanList) {
+                        for (RibaoStoryBean bean : storyBeanList) {
+                            bean.setDate("今日热闻");
+                        }
+                        return storyBeanList;
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<RibaoStoryBean>>() {
+                .subscribe(new SimpleSubscriber<List<RibaoStoryBean>>(mContext) {
                     @Override
                     public void onCompleted() {
-                        mView.hideProgressDialog();
+                        mView.dismissProgress();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.showError(e.getMessage());
-                        mView.hideProgressDialog();
+                        super.onError(e);
+                        mView.dismissProgress();
                     }
 
                     @Override
-                    public void onNext(List<RibaoStoryBean> ribaoStoryBeen) {
-                        for (RibaoStoryBean bean : ribaoStoryBeen) {
-                            bean.setDate("今日热闻");
-                        }
-                        mView.setNewStoryData(ribaoStoryBeen);
+                    public void onNext(List<RibaoStoryBean> storyBeanList) {
+                        mView.setNewStoryData(storyBeanList);
                     }
                 });
         // TODO: 2016/9/29 0029 add subscription
@@ -91,30 +101,37 @@ public class RibaoPresenter implements RibaoContract.Presenter {
                         return storyBeanList.size() > 0;
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<RibaoStoryBean>>() {
+                .map(new Func1<List<RibaoStoryBean>, List<RibaoStoryBean>>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.showError(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(List<RibaoStoryBean> storyBeanList) {
+                    public List<RibaoStoryBean> call(List<RibaoStoryBean> storyBeanList) {
                         mSectionTitle.setLength(0);
-                        mSectionTitle.append(DateUtil.dateToMd("yyyyMMdd", "MM月dd日", mTargetDate))
+                        mSectionTitle.append(DateUtils.dateToMd("yyyyMMdd", "MM月dd日", mTargetDate))
                                 .append(" ")
-                                .append(DateUtil.getWeekOfDate(DateUtil.dateToMillis("yyyyMMdd", mTargetDate)));
+                                .append(DateUtils.getWeekOfDate(DateUtils.dateToMillis("yyyyMMdd", mTargetDate)));
                         RibaoStoryBean sectionHeader = new RibaoStoryBean(true, mSectionTitle.toString());
                         storyBeanList.add(0, sectionHeader);
                         for (RibaoStoryBean bean : storyBeanList) {
                             bean.setDate(mSectionTitle.toString());
                         }
+                        return storyBeanList;
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleSubscriber<List<RibaoStoryBean>>(mContext) {
+                    @Override
+                    public void onCompleted() {
+                        mView.dismissProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        mView.dismissProgress();
+                    }
+
+                    @Override
+                    public void onNext(List<RibaoStoryBean> storyBeanList) {
                         mView.addStoryData(storyBeanList);
                     }
                 });

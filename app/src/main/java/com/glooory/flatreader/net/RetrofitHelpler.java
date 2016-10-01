@@ -2,7 +2,7 @@ package com.glooory.flatreader.net;
 
 import com.glooory.flatreader.api.RibaoApi;
 import com.glooory.flatreader.base.MyApplication;
-import com.glooory.flatreader.util.NeworkUtil;
+import com.glooory.flatreader.util.NeworkUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class RetrofitHelpler {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
-            if (NeworkUtil.isNetworkAvaliable(MyApplication.getInstance())) {
+            if (NeworkUtils.isNetworkAvaliable(MyApplication.getInstance())) {
                 int maxAge = 60;  //在线缓存在一分钟内可以读取
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")

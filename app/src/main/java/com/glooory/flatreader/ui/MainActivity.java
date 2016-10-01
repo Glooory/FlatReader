@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initRibaoUI() {
         Fragment fragment = RibaoFragment.newInstance();
-        new RibaoPresenter((RibaoContract.View) fragment);
+        new RibaoPresenter(this, (RibaoContract.View) fragment);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main, fragment).commit();
     }
