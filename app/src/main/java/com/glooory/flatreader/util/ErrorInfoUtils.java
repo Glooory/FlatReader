@@ -28,8 +28,12 @@ public class ErrorInfoUtils {
             //如果是application/json 类型的数据，则解析返回内容
             if (type.type().equals("application") && type.subtype().equals("json")) {
                 try {
-                    ErrorResponse response = new Gson().fromJson(responseBody.toString(), ErrorResponse.class);
-                    errorMsg = "错误代码：" + response.getCode();
+                    if (responseBody != null) {
+                        ErrorResponse response = new Gson().fromJson(responseBody.toString(), ErrorResponse.class);
+                        errorMsg = "错误代码：" + response.getCode();
+                    } else {
+                        errorMsg = "无法连接到服务器";
+                    }
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }

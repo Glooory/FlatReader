@@ -49,7 +49,7 @@ public class RetrofitHelpler {
     private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
     private static OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
-            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+//            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();
 

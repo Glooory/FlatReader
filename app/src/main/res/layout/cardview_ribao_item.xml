@@ -29,7 +29,7 @@
                 android:id="@+id/img_card_ribao_item"
                 android:layout_width="@dimen/ribao_item_image_width"
                 android:layout_height="@dimen/ribao_item_image_height"
-                fresco:placeholderImageScaleType="centerCrop"
+                fresco:actualImageScaleType="centerCrop"
                 fresco:viewAspectRatio="1.33" />
 
             <TextView
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
-                android:background="@color/grey_a_900"
+                android:background="@color/grey_a60_900"
                 android:drawableLeft="@drawable/ic_multipic"
                 android:drawablePadding="4dp"
                 android:padding="2dp"

@@ -25,7 +25,8 @@
     <color name="grey_900">#212121</color>
     <color name="grey_1000">#000000</color>
 
-    <color name="grey_a_900">#60212121</color>
+    <color name="grey_a60_900">#60212121</color>
+    <color name="grey_a90_900">#95212121</color>
 
     <color name="blue_g_i">#4885ed</color>
     <color name="red_g_i">#db3236</color>

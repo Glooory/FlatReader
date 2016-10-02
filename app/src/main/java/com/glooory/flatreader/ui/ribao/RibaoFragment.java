@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.RibaoSectionAdapter;
 import com.glooory.flatreader.base.BaseFragment;
 import com.glooory.flatreader.callback.OnSectionChangeListener;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.ui.MainActivity;
+import com.glooory.flatreader.ui.storydetail.StoryDetailActivity;
 
 import java.util.List;
 
@@ -84,6 +86,9 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 // TODO: 2016/9/30 0030 launch StoryDetailActivity
+                StoryDetailActivity.launch(getActivity(),
+                        String.valueOf(((RibaoStoryBean) mAdapter.getItem(i)).getId()),
+                        (SimpleDraweeView) view.findViewById(R.id.img_card_ribao_item));
             }
         });
     }

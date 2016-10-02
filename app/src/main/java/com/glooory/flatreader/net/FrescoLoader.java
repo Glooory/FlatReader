@@ -44,11 +44,8 @@ public class FrescoLoader {
         //请求参数， 主要配置url和C层相关
         ImageRequestBuilder imageRequestBuilder = ImageRequestBuilder
                 .newBuilderWithSource(Uri.parse(builder.mUrl))
-//                .setResizeOptions(builder.mResizeOption)
-                .setProgressiveRenderingEnabled(true);//设置渐进式加载
-        if (builder.mResizeOption != null) {
-            imageRequestBuilder.setResizeOptions(builder.mResizeOption);
-        }
+                .setResizeOptions(builder.mResizeOption == null ? null : builder.mResizeOption);
+//                .setProgressiveRenderingEnabled(true);//设置渐进式加载
 
         ImageRequest request = imageRequestBuilder.build();
 
@@ -61,7 +58,7 @@ public class FrescoLoader {
 
         builderC.setImageRequest(request);
         //配置渐进式加载
-        builderC.setOldController(builder.mSimpleDraweeView.getController());
+//        builderC.setOldController(builder.mSimpleDraweeView.getController());
 
         setViewPerformance(builder, builderM, builderC);
 
