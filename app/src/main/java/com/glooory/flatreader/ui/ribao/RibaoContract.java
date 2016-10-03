@@ -24,12 +24,6 @@ public interface RibaoContract {
         void getLatestStories();
 
         void getPastStories();
-//
-//        void getLatest();
-//
-//        void getDataByDate(String date);
-//
-//        void getDataFromCache();
     }
 
 }

@@ -17,15 +17,16 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             app:contentScrim="@color/transparent"
             app:layout_scrollFlags="scroll"
-            android:fitsSystemWindows="true"
             app:statusBarScrim="@color/colorPrimaryDark"
             app:titleEnabled="false">
 
-            <include layout="@layout/view_story_img_header"
+            <include
+                layout="@layout/view_story_img_header"
                 android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll"/>
+                app:layout_scrollFlags="scroll" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_story"
@@ -44,15 +45,13 @@
         android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--<WebView-->
-        <!--android:id="@+id/webview_story"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-
-        <TextView
-            android:id="@+id/tv_temp_story_content"
+        <WebView
+            android:id="@+id/webview_story"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:scrollbarStyle="outsideInset"
+            android:scrollbars="vertical"
+            android:fitsSystemWindows="true" />
 
     </android.support.v4.widget.NestedScrollView>
 

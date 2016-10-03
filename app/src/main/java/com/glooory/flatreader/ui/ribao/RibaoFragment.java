@@ -57,6 +57,7 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        new RibaoPresenter(mContext, this);
         mSwipeLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.view_swipe_recycler, container, false);
         initView();
         mPresenter.getLatestStories();
@@ -85,7 +86,6 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                // TODO: 2016/9/30 0030 launch StoryDetailActivity
                 StoryDetailActivity.launch(getActivity(),
                         String.valueOf(((RibaoStoryBean) mAdapter.getItem(i)).getId()),
                         (SimpleDraweeView) view.findViewById(R.id.img_card_ribao_item));
@@ -149,5 +149,13 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
     @Override
     public void onLoadMoreRequested() {
         mPresenter.getPastStories();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
     }
 }

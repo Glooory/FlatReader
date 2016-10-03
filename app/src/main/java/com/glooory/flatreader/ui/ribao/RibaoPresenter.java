@@ -2,6 +2,7 @@ package com.glooory.flatreader.ui.ribao;
 
 import android.content.Context;
 
+import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ribao.RibaoIStoriesBean;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.net.RetrofitHelpler;
@@ -19,7 +20,7 @@ import rx.schedulers.Schedulers;
  * Created by Glooory on 2016/9/29 0029 17:39.
  */
 
-public class RibaoPresenter implements RibaoContract.Presenter {
+public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.Presenter {
     private final RibaoContract.View mView;
     private String mTargetDate;
     private StringBuilder mSectionTitle;
@@ -79,7 +80,7 @@ public class RibaoPresenter implements RibaoContract.Presenter {
                         mView.setNewStoryData(storyBeanList);
                     }
                 });
-        // TODO: 2016/9/29 0029 add subscription
+        addSubscription(s);
     }
 
     @Override
@@ -135,11 +136,6 @@ public class RibaoPresenter implements RibaoContract.Presenter {
                         mView.addStoryData(storyBeanList);
                     }
                 });
-        // TODO: 2016/9/30 0030 deal with the subscription
-    }
-
-    @Override
-    public void detachView() {
-
+        addSubscription(s);
     }
 }

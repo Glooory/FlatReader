@@ -2,7 +2,6 @@ package com.glooory.flatreader.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,9 +12,7 @@ import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.callback.OnSectionChangeListener;
-import com.glooory.flatreader.ui.ribao.RibaoContract;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
-import com.glooory.flatreader.ui.ribao.RibaoPresenter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,10 +96,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initRibaoUI() {
-        Fragment fragment = RibaoFragment.newInstance();
-        new RibaoPresenter(this, (RibaoContract.View) fragment);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, fragment).commit();
+                .replace(R.id.content_main, RibaoFragment.newInstance()).commit();
     }
 
     @Override

@@ -8,17 +8,22 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class BasePresenterImpl implements BasePresenter {
-    private CompositeSubscription mCompositeSubscription;
+    protected CompositeSubscription mCompositeSubscription;
 
     public void addSubscription(Subscription subscription) {
-        if (this.mCompositeSubscription == null) {
-            this.mCompositeSubscription = new CompositeSubscription();
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
         }
-        this.mCompositeSubscription.add(subscription);
+        if (subscription == null) {
+            return;
+        }
+        mCompositeSubscription.add(subscription);
     }
 
     @Override
     public void detachView() {
-
+        if (mCompositeSubscription != null && !mCompositeSubscription.isUnsubscribed()) {
+            mCompositeSubscription.unsubscribe();
+        }
     }
 }
