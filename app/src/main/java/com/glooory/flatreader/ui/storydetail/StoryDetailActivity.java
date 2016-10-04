@@ -8,18 +8,19 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.Fade;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.bumptech.glide.Glide;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.BaseActivity;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.ribao.RibaoStoryContentBean;
-import com.glooory.flatreader.net.FrescoLoader;
 import com.glooory.flatreader.util.WebUtils;
 
 import java.util.List;
@@ -33,22 +34,24 @@ import butterknife.ButterKnife;
 
 public class StoryDetailActivity extends BaseActivity implements StoryDetailContract.StoryDetailView {
     @BindView(R.id.img_story_pic)
-    SimpleDraweeView mStoryHeadImg;
+    ImageView mStoryHeadImg;
     @BindView(R.id.tv_story_detail_title)
     TextView mStoryTitleTv;
     @BindView(R.id.tv_story_detail_pic_author)
     TextView mPicAuthorTv;
     @BindView(R.id.toolbar_story)
     Toolbar mToolbar;
-    @BindView(R.id.webview_story)
+    @BindView(R.id .webview_story)
     WebView mWebview;
     @BindView(R.id.coordinator_story)
     CoordinatorLayout mCoordinator;
+//    @BindView(R.id.tv_story_content)
+//    TextView mContentTv;
 
     private String mStoryId;
     private StoryDetailContract.StoryDetailPresenter mPresenter;
 
-    public static void launch(Activity activity, String storyId, SimpleDraweeView tranImg) {
+    public static void launch(Activity activity, String storyId, ImageView tranImg) {
         Intent intent = new Intent(activity, StoryDetailActivity.class);
         intent.putExtra(Constants.STORY_ID, storyId);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -65,11 +68,22 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story);
+        setupWindowAnimations();
         ButterKnife.bind(this);
         new StoryDetailPresenter(mContext, this);
         mStoryId = getIntent().getStringExtra(Constants.STORY_ID);
         initView();
         mPresenter.loadStory(mStoryId);
+    }
+
+    private void setupWindowAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade fade = new Fade();
+            fade.setDuration(200);
+            getWindow().setAllowEnterTransitionOverlap(true);
+            getWindow().setAllowReturnTransitionOverlap(true);
+            getWindow().setEnterTransition(fade);
+        }
     }
 
     private void initView() {
@@ -78,6 +92,12 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
         getSupportActionBar().setTitle("");
 
         //配置Webview
+//        if (Build.VERSION.SDK_INT >= 19) {
+//            mWebview.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+//        }
+//        else {
+//            mWebview.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        }
         WebSettings webSettings = mWebview.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -92,14 +112,20 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
     }
 
     private void loadStoryContent(RibaoStoryContentBean bean) {
-        new FrescoLoader.Builder(mContext, mStoryHeadImg, bean.getImage())
-                .build();
+//        new FrescoLoader.Builder(mContext, mStoryHeadImg, bean.getImage())
+//                .build();
+        Glide
+                .with(this)
+                .load(bean.getImage())
+                .into(mStoryHeadImg);
         mStoryTitleTv.setText(bean.getTitle());
         mPicAuthorTv.setText(bean.getImage_source());
         String url = bean.getShare_url();
         boolean isEmpty = TextUtils.isEmpty(bean.getBody());
         String storyBody = bean.getBody();
         List<String> cssList = bean.getCss();
+//        mContentTv.setText(bean.getBody());
+
         if (isEmpty) {
             mWebview.loadUrl(url);
         } else {

@@ -25,12 +25,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <!--<com.facebook.drawee.view.SimpleDraweeView-->
+                <!--android:id="@+id/img_card_ribao_item"-->
+                <!--android:layout_width="@dimen/ribao_item_image_width"-->
+                <!--android:layout_height="@dimen/ribao_item_image_height"-->
+                <!--fresco:actualImageScaleType="centerCrop"-->
+                <!--fresco:viewAspectRatio="1.33" />-->
+
+            <ImageView
                 android:id="@+id/img_card_ribao_item"
                 android:layout_width="@dimen/ribao_item_image_width"
                 android:layout_height="@dimen/ribao_item_image_height"
-                fresco:actualImageScaleType="centerCrop"
-                fresco:viewAspectRatio="1.33" />
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/tv_multipic"

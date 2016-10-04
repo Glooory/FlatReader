@@ -7,13 +7,21 @@
     android:fitsSystemWindows="true"
     app:layout_scrollFlags="scroll">
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+        <!--android:id="@+id/img_story_pic"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--android:transitionName="@string/shared_imga_transition_name"-->
+        <!--fresco:viewAspectRatio="1.33" />-->
+
+    <com.glooory.flatreader.widget.FourThreeImageView
         android:id="@+id/img_story_pic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
         android:fitsSystemWindows="true"
-        android:transitionName="@string/shared_imga_transition_name"
-        fresco:viewAspectRatio="1.33" />
+        android:transitionName="@string/shared_imga_transition_name"/>
 
     <LinearLayout
         android:layout_width="match_parent"
