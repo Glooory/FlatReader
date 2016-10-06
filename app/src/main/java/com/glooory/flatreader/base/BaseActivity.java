@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.view.DraweeTransition;
@@ -23,6 +24,14 @@ public class BaseActivity extends AppCompatActivity {
 //        setUpTransition();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finishSelf();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     //fresco shared element transition 已经解决的bug 调用以下方法
     private void setUpTransition() {

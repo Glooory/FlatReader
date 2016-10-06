@@ -72,6 +72,9 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 // TODO: 2016/10/6 0006 launch gank detail activity
+                GankDetailActivity.launch(getActivity(),
+                        ((GankBean) baseQuickAdapter.getItem(i)).getDesc(),
+                        ((GankBean) baseQuickAdapter.getItem(i)).getUrl());
             }
         });
     }
