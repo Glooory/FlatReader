@@ -13,7 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
-import com.glooory.flatreader.callback.OnSectionChangeListener;
+import com.glooory.flatreader.listener.OnSectionChangeListener;
+import com.glooory.flatreader.ui.gank.GankFragment;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
 
 import butterknife.BindView;
@@ -98,9 +99,15 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_ribao) {
-            initRibaoUI();
+        switch (id) {
+            case R.id.nav_ribao:
+                initRibaoUI();
+                break;
+            case R.id.nav_gank:
+                getSupportActionBar().setTitle(getString(R.string.nav_gank_title));
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, GankFragment.newInstance()).commit();
+                break;
         }
 
         mDrawer.closeDrawer(GravityCompat.START);

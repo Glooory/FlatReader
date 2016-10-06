@@ -1,5 +1,6 @@
 package com.glooory.flatreader.net;
 
+import com.glooory.flatreader.api.GankApi;
 import com.glooory.flatreader.api.RibaoApi;
 import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.util.NeworkUtils;
@@ -54,6 +55,7 @@ public class RetrofitHelpler {
             .build();
 
     public volatile RibaoApi ribaoApi;
+    public volatile GankApi gankApi;
 
     public static RetrofitHelpler getInstance() {
         if (retrofitHelpler == null) {
@@ -81,6 +83,23 @@ public class RetrofitHelpler {
             }
         }
         return ribaoApi;
+    }
+
+    public GankApi getGankService() {
+        if (gankApi == null) {
+            synchronized (GankApi.class) {
+                if (gankApi == null) {
+                    gankApi = new Retrofit.Builder()
+                            .baseUrl("http://gank.io/api/data/")
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .client(client)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build()
+                            .create(GankApi.class);
+                }
+            }
+        }
+        return gankApi;
     }
 
 }

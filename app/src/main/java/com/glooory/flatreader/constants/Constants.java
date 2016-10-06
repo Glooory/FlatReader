@@ -10,4 +10,7 @@ public class Constants {
     public static final String STORY_TITLE = "story_title";
     public static final String STORY_ID = "story_id";
 
+    public static final String CATEGORY_ANDROID = "Android";
+    public static final int PAGE_SIZE = 20;
+
 }

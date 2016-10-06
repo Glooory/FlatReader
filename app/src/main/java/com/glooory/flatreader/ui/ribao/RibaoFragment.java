@@ -16,7 +16,7 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.RibaoSectionAdapter;
 import com.glooory.flatreader.base.BaseFragment;
-import com.glooory.flatreader.callback.OnSectionChangeListener;
+import com.glooory.flatreader.listener.OnSectionChangeListener;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.ui.MainActivity;
 import com.glooory.flatreader.ui.storydetail.StoryDetailActivity;
@@ -54,10 +54,15 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
         mCurrentTitle = context.getString(R.string.title_ribao_latest);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        new RibaoPresenter(mContext, this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        new RibaoPresenter(mContext, this);
         mSwipeLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.view_swipe_recycler, container, false);
         initView();
         mPresenter.getLatestStories();
