@@ -24,9 +24,7 @@
             app:titleEnabled="false">
 
             <include
-                layout="@layout/view_story_img_header"
-                android:fitsSystemWindows="true"
-                app:layout_scrollFlags="scroll" />
+                layout="@layout/view_story_img_header" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_story"

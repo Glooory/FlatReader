@@ -16,7 +16,17 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:elevation="2dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/progressbar_gank_detail"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:max="100"
+            android:tint="@color/green_g_i"
+            app:mpb_progressStyle="horizontal"
+            app:mpb_useIntrinsicPadding="false" />
 
     </android.support.design.widget.AppBarLayout>
 
@@ -24,6 +34,6 @@
         android:id="@+id/webview_gank_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

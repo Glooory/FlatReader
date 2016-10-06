@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -21,6 +22,7 @@ import com.glooory.flatreader.util.StringUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Glooory on 2016/10/6 0006 16:53.
@@ -31,6 +33,8 @@ public class GankDetailActivity extends BaseActivity {
     public static final String KEY_GANK_URL = "key_gank_url";
     @BindView(R.id.coordinator_gank_detail)
     CoordinatorLayout mCoordinator;
+    @BindView(R.id.progressbar_gank_detail)
+    MaterialProgressBar mProgressBar;
     private String mGankTitle;
     private String mGankUrl;
 
@@ -68,7 +72,17 @@ public class GankDetailActivity extends BaseActivity {
         settings.setAppCacheEnabled(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setSupportZoom(true);
-        mWebview.setWebChromeClient(new WebChromeClient());
+        mWebview.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                if (newProgress >= 100) {
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                mProgressBar.setProgress(newProgress);
+            }
+        });
         mWebview.setWebViewClient(new WebViewClient());
     }
 
