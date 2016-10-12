@@ -1,4 +1,4 @@
-package com.glooory.flatreader.ui.gank;
+package com.glooory.flatreader.ui.ithome;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,32 +12,33 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
-import com.glooory.flatreader.adapter.GankAdapter;
+import com.glooory.flatreader.adapter.ITHomeAdapter;
 import com.glooory.flatreader.base.BaseFragment;
-import com.glooory.flatreader.constants.Constants;
-import com.glooory.flatreader.entity.gank.GankBean;
+import com.glooory.flatreader.entity.ithome.ITHomeItemBean;
 
 import java.util.List;
 
 /**
- * Created by Glooory on 2016/10/6 0006 12:53.
+ * Created by Glooory on 2016/10/12 0012 13:41.
  */
 
-public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
-        GankContract.GankView, BaseQuickAdapter.RequestLoadMoreListener{
-    private GankContract.GankPresenter mPresenter;
+public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
+        ITHomeContract.View, BaseQuickAdapter.RequestLoadMoreListener {
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
-    private GankAdapter mAdapter;
+    private ITHomeContract.Presenter mPresenter;
+    private ITHomeAdapter mAdapter;
+    private int mPageSize = 30;
 
-    public static GankFragment newInstance() {
-        return new GankFragment();
+    public static ITHomeFragment newInstance() {
+        ITHomeFragment fragment = new ITHomeFragment();
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new GankPresenter(mContext, this);
+        new ITHomePresenter(mContext, this);
     }
 
     @Nullable
@@ -45,7 +46,7 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mSwipeLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.view_swipe_recycler, container, false);
         initView();
-        mPresenter.loadGankDataFirstTime();
+        mPresenter.loadNewest();
         return mSwipeLayout;
     }
 
@@ -60,42 +61,42 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     private void initAdapter() {
-        mAdapter = new GankAdapter(mContext);
+        mAdapter = new ITHomeAdapter(mContext);
 
         //正在加载的footer
         View loadingFooter = LayoutInflater.from(mContext).inflate(R.layout.view_loading_footer, mRecyclerView, false);
         mAdapter.setLoadingView(loadingFooter);
         mAdapter.setOnLoadMoreListener(this);
-        mAdapter.openLoadMore(Constants.PAGE_SIZE);
 
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
                 // TODO: 2016/10/6 0006 launch gank detail activity
-                GankDetailActivity.launch(getActivity(),
-                        ((GankBean) baseQuickAdapter.getItem(i)).getDesc(),
-                        ((GankBean) baseQuickAdapter.getItem(i)).getUrl());
             }
         });
     }
 
     @Override
     public void onRefresh() {
-        mPresenter.loadGankDataFirstTime();
+        mPresenter.loadNewest();
     }
 
     @Override
-    public void setNewGankData(List<GankBean> gankList) {
-        mAdapter.setNewData(gankList);
+    public void setNewITData(List<ITHomeItemBean> itItemList) {
+        mPageSize = itItemList.size();
+        mAdapter.openLoadMore(mPageSize);
+        mAdapter.setNewData(itItemList);
     }
 
     @Override
-    public void addGankData(List<GankBean> gankList) {
-        mAdapter.addData(gankList);
+    public void addITData(List<ITHomeItemBean> itItemList) {
+        mPageSize = itItemList.size();
+        mAdapter.openLoadMore(mPageSize);
+        mAdapter.addData(itItemList);
     }
 
     @Override
-    public void setPresenter(GankContract.GankPresenter presenter) {
+    public void setPresenter(ITHomeContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
 
@@ -111,6 +112,6 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Override
     public void onLoadMoreRequested() {
-        mPresenter.loadMoreGankData();
+        mPresenter.loadMore();
     }
 }

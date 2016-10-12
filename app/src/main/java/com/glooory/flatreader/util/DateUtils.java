@@ -1,5 +1,7 @@
 package com.glooory.flatreader.util;
 
+import android.content.Context;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,7 +65,7 @@ public class DateUtils {
      * @param date
      * @return
      */
-    public static String dateToMd(String currentPattern, String tagetPattern, String date) {
+    public static String dateToPattern(String currentPattern, String tagetPattern, String date) {
         SimpleDateFormat sdf = new SimpleDateFormat(currentPattern);
         SimpleDateFormat sdfToString = new SimpleDateFormat(tagetPattern);
         try {
@@ -73,6 +75,35 @@ public class DateUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 转换IT之家的时间格式
+     * 如果是当天就只显示小时和分钟
+     * 如果是当天之前就显示日期加小时和分钟
+     *
+     * @param date
+     * @return
+     */
+    public static String dateToITPattern(Context context, String date) {
+        String result = "";
+        SimpleDateFormat sdfOriginal = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdfCurrent = new SimpleDateFormat("yyyy-MM-dd");
+        String currentData = sdfCurrent.format(new Date(System.currentTimeMillis()));
+        try {
+            if (currentData.equals(date.substring(0, 10))) {
+                SimpleDateFormat sdfWithoutDay = new SimpleDateFormat("HH:mm");
+                Date datewithoutDay = sdfOriginal.parse(date);
+                result = sdfWithoutDay.format(datewithoutDay);
+            } else {
+                SimpleDateFormat sdfWithDay = new SimpleDateFormat("MM月dd日 HH:mm");
+                Date dateWithDay = sdfOriginal.parse(date);
+                result = sdfWithDay.format(dateWithDay);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

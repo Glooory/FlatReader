@@ -20,12 +20,12 @@ import rx.schedulers.Schedulers;
  * Created by Glooory on 2016/10/6 0006 12:54.
  */
 
-public class GankPresenter extends BasePresenterImpl implements GankContrast.GankPresenter {
+public class GankPresenter extends BasePresenterImpl implements GankContract.GankPresenter {
     private Context mContext;
-    private GankContrast.GankView mView;
+    private GankContract.GankView mView;
     private int mPage;
 
-    public GankPresenter(Context context, GankContrast.GankView view) {
+    public GankPresenter(Context context, GankContract.GankView view) {
         this.mContext = context;
         this.mView = view;
         mView.setPresenter(this);

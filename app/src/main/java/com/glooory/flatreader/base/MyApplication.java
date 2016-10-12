@@ -2,7 +2,6 @@ package com.glooory.flatreader.base;
 
 import android.app.Application;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -22,7 +21,6 @@ public class MyApplication extends Application {
         super.onCreate();
         sInstance = this;
         Logger.init();
-        Fresco.initialize(this);
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.

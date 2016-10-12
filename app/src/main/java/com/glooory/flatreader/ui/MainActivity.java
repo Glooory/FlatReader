@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.listener.OnSectionChangeListener;
 import com.glooory.flatreader.ui.gank.GankFragment;
+import com.glooory.flatreader.ui.ithome.ITHomeFragment;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
 
 import butterknife.BindView;
@@ -41,9 +42,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupWindowAnimations() {
-        Slide slide = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            slide = new Slide(Gravity.RIGHT);
+            Slide slide = new Slide(Gravity.RIGHT);
             slide.setDuration(200);
             getWindow().setExitTransition(slide);
         }
@@ -107,6 +107,11 @@ public class MainActivity extends AppCompatActivity
                 getSupportActionBar().setTitle(getString(R.string.nav_gank_title));
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main, GankFragment.newInstance()).commit();
+                break;
+            case R.id.nav_ithome:
+                getSupportActionBar().setTitle(getString(R.string.nav_it_title));
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_main, ITHomeFragment.newInstance()).commit();
                 break;
         }
 

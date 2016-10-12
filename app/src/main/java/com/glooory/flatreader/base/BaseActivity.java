@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.view.DraweeTransition;
-
 /**
  * Created by Glooory on 2016/10/1 0001 16:49.
  */
@@ -19,9 +16,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         this.mContext = this;
-//        setUpTransition();
     }
 
     @Override
@@ -31,17 +26,6 @@ public class BaseActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    //fresco shared element transition 已经解决的bug 调用以下方法
-    private void setUpTransition() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            getWindow().setSharedElementEnterTransition(DraweeTransition.createTransitionSet(
-                    ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.FIT_CENTER));
-            getWindow().setSharedElementReturnTransition(DraweeTransition.createTransitionSet(
-                    ScalingUtils.ScaleType.FIT_CENTER, ScalingUtils.ScaleType.CENTER_CROP));
-        }
     }
 
     public void finishSelf() {

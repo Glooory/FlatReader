@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Glooory on 2016/10/6 0006 12:53.
  */
 
-public interface GankContrast {
+public interface GankContract {
 
     interface GankView extends BaseView<GankPresenter> {
 

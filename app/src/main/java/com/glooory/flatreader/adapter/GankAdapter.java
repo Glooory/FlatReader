@@ -23,7 +23,7 @@ public class GankAdapter extends BaseQuickAdapter<GankBean> {
     @Override
     protected void convert(BaseViewHolder holder, GankBean bean) {
         holder.setText(R.id.tv_card_gankitem_title, bean.getDesc())
-                .setText(R.id.tv_card_gankitem_pubtime, DateUtils.dateToMd("yyyy-MM-dd", "MM月dd日", bean.getPublishedAt().substring(0, 10)))
+                .setText(R.id.tv_card_gankitem_pubtime, DateUtils.dateToPattern("yyyy-MM-dd", "MM月dd日", bean.getPublishedAt().substring(0, 10)))
                 .setText(R.id.tv_card_gankitem_author, bean.getWho())
                 .addOnClickListener(R.id.card_gank);
     }

@@ -112,10 +112,7 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
     }
 
     private void loadStoryContent(RibaoStoryContentBean bean) {
-//        new FrescoLoader.Builder(mContext, mStoryHeadImg, bean.getImage())
-//                .build();
-        Glide
-                .with(this)
+        Glide.with(this)
                 .load(bean.getImage())
                 .into(mStoryHeadImg);
         mStoryTitleTv.setText(bean.getTitle());

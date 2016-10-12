@@ -11,9 +11,9 @@
             android:icon="@drawable/ic_gank_24dp"
             android:title="@string/nav_gank_title" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_ithome"
+            android:icon="@drawable/ic_it_24dp"
+            android:title="@string/nav_it_title" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"

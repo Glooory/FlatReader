@@ -1,6 +1,7 @@
 package com.glooory.flatreader.net;
 
 import com.glooory.flatreader.api.GankApi;
+import com.glooory.flatreader.api.ITHomeApi;
 import com.glooory.flatreader.api.RibaoApi;
 import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.util.NeworkUtils;
@@ -15,6 +16,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by Glooory on 2016/9/29 0029 15:02.
@@ -56,6 +58,7 @@ public class RetrofitHelpler {
 
     public volatile RibaoApi ribaoApi;
     public volatile GankApi gankApi;
+    public volatile ITHomeApi itHomeApi;
 
     public static RetrofitHelpler getInstance() {
         if (retrofitHelpler == null) {
@@ -100,6 +103,23 @@ public class RetrofitHelpler {
             }
         }
         return gankApi;
+    }
+
+    public ITHomeApi getItHomeApi() {
+        if (itHomeApi == null) {
+            synchronized (ITHomeApi.class) {
+                if (itHomeApi == null) {
+                    itHomeApi = new Retrofit.Builder()
+                            .baseUrl("http://api.ithome.com/")
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .addConverterFactory(SimpleXmlConverterFactory.create())
+                            .client(client)
+                            .build()
+                            .create(ITHomeApi.class);
+                }
+            }
+        }
+        return itHomeApi;
     }
 
 }

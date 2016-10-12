@@ -106,7 +106,7 @@ public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.P
                     @Override
                     public List<RibaoStoryBean> call(List<RibaoStoryBean> storyBeanList) {
                         mSectionTitle.setLength(0);
-                        mSectionTitle.append(DateUtils.dateToMd("yyyyMMdd", "MM月dd日", mTargetDate))
+                        mSectionTitle.append(DateUtils.dateToPattern("yyyyMMdd", "MM月dd日", mTargetDate))
                                 .append(" ")
                                 .append(DateUtils.getWeekOfDate(DateUtils.dateToMillis("yyyyMMdd", mTargetDate)));
                         RibaoStoryBean sectionHeader = new RibaoStoryBean(true, mSectionTitle.toString());
