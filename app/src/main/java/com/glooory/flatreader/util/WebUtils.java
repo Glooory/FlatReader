@@ -55,5 +55,4 @@ public class WebUtils {
         modifiedHtml.append("</body></html>");
         return modifiedHtml.toString();
     }
-
 }

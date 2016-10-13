@@ -102,7 +102,6 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
         webSettings.setJavaScriptEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setBuiltInZoomControls(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setDatabaseEnabled(true);
         webSettings.setAppCachePath(getCacheDir().getAbsolutePath() + "/webviewcache");

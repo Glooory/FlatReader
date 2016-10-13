@@ -15,6 +15,7 @@ import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.ITHomeAdapter;
 import com.glooory.flatreader.base.BaseFragment;
 import com.glooory.flatreader.entity.ithome.ITHomeItemBean;
+import com.glooory.flatreader.ui.ithomecontent.ITContentActivity;
 
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                // TODO: 2016/10/6 0006 launch gank detail activity
+                ITContentActivity.launch(getActivity(), mAdapter.getItem(i));
             }
         });
     }
