@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -131,5 +132,16 @@ public class ITContentActivity extends BaseActivity implements ITContentContract
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mWebview != null) {
+            ((ViewGroup) mWebview.getParent()).removeView(mWebview);
+            mWebview.destroy();
+            mWebview = null;
+        }
+        mPresenter.detachView();
     }
 }

@@ -5,7 +5,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.view.Gravity;
@@ -13,15 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
+import com.glooory.flatreader.base.BaseActivity;
 import com.glooory.flatreader.listener.OnSectionChangeListener;
 import com.glooory.flatreader.ui.gank.GankFragment;
 import com.glooory.flatreader.ui.ithome.ITHomeFragment;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
+import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnSectionChangeListener{
     @BindView(R.id.toolbar)
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout mDrawer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupWindowAnimations();
@@ -61,6 +62,14 @@ public class MainActivity extends AppCompatActivity
 
         mNavView.setNavigationItemSelectedListener(this);
         mNavView.getMenu().getItem(0).setChecked(true); //默认选中第一个选项
+    }
+
+    @Override
+    protected void setStatusBar() {
+        StatusBarUtil.setColorForDrawerLayout(this,
+                (DrawerLayout) findViewById(R.id.drawer_layout),
+                getResources().getColor(R.color.colorPrimaryDark),
+                0);
     }
 
     @Override
@@ -112,6 +121,8 @@ public class MainActivity extends AppCompatActivity
                 getSupportActionBar().setTitle(getString(R.string.nav_it_title));
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main, ITHomeFragment.newInstance()).commit();
+                break;
+            case R.id.nav_share:
                 break;
         }
 

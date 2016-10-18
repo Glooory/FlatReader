@@ -14,14 +14,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.BaseActivity;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.ribao.RibaoStoryContentBean;
+import com.glooory.flatreader.net.ImageLoader;
 import com.glooory.flatreader.util.WebUtils;
+
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import java.util.List;
 
@@ -35,18 +36,14 @@ import butterknife.ButterKnife;
 public class StoryDetailActivity extends BaseActivity implements StoryDetailContract.StoryDetailView {
     @BindView(R.id.img_story_pic)
     ImageView mStoryHeadImg;
-    @BindView(R.id.tv_story_detail_title)
-    TextView mStoryTitleTv;
-    @BindView(R.id.tv_story_detail_pic_author)
-    TextView mPicAuthorTv;
     @BindView(R.id.toolbar_story)
     Toolbar mToolbar;
-    @BindView(R.id .webview_story)
+    @BindView(R.id.webview_story)
     WebView mWebview;
     @BindView(R.id.coordinator_story)
     CoordinatorLayout mCoordinator;
-//    @BindView(R.id.tv_story_content)
-//    TextView mContentTv;
+    @BindView(R.id.collapsing_toolbar_story)
+    CollapsingToolbarLayout mCollapsingToolbar;
 
     private String mStoryId;
     private StoryDetailContract.StoryDetailPresenter mPresenter;
@@ -60,7 +57,7 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
                     activity, tranImg, activity.getString(R.string.shared_imga_transition_name)
             ).toBundle());
         } else {
-            activity.startActivity(intent);
+        activity.startActivity(intent);
         }
     }
 
@@ -84,6 +81,10 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
             getWindow().setAllowReturnTransitionOverlap(true);
             getWindow().setEnterTransition(fade);
         }
+    }
+
+    @Override
+    protected void setStatusBar() {
     }
 
     private void initView() {
@@ -111,16 +112,12 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
     }
 
     private void loadStoryContent(RibaoStoryContentBean bean) {
-        Glide.with(this)
-                .load(bean.getImage())
-                .into(mStoryHeadImg);
-        mStoryTitleTv.setText(bean.getTitle());
-        mPicAuthorTv.setText(bean.getImage_source());
+        ImageLoader.load(this, mStoryHeadImg, bean.getImage());
+        mCollapsingToolbar.setTitle(bean.getTitle());
         String url = bean.getShare_url();
         boolean isEmpty = TextUtils.isEmpty(bean.getBody());
         String storyBody = bean.getBody();
         List<String> cssList = bean.getCss();
-//        mContentTv.setText(bean.getBody());
 
         if (isEmpty) {
             mWebview.loadUrl(url);

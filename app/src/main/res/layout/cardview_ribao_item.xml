@@ -6,37 +6,29 @@
     android:id="@+id/cardview_ribao_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_default_half"
     android:layout_marginLeft="@dimen/padding_default"
     android:layout_marginRight="@dimen/padding_default"
-    android:layout_marginTop="@dimen/padding_default_half"
+    android:layout_marginTop="@dimen/padding_default"
     android:clickable="true"
-    android:elevation="@dimen/z_card"
-    android:foreground="?attr/selectableItemBackground">
+    android:foreground="?attr/selectableItemBackground"
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:padding="8dp">
 
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical">
 
-            <!--<com.facebook.drawee.view.SimpleDraweeView-->
-                <!--android:id="@+id/img_card_ribao_item"-->
-                <!--android:layout_width="@dimen/ribao_item_image_width"-->
-                <!--android:layout_height="@dimen/ribao_item_image_height"-->
-                <!--fresco:actualImageScaleType="centerCrop"-->
-                <!--fresco:viewAspectRatio="1.33" />-->
-
             <ImageView
                 android:id="@+id/img_card_ribao_item"
                 android:layout_width="@dimen/ribao_item_image_width"
                 android:layout_height="72dp"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/tv_multipic"
@@ -60,7 +52,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:ellipsize="marquee"
+            android:maxLines="3" />
 
     </LinearLayout>
 

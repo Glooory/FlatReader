@@ -4,13 +4,12 @@
     android:id="@+id/card_gank"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/padding_default_half"
     android:layout_marginLeft="@dimen/padding_default"
     android:layout_marginRight="@dimen/padding_default"
-    android:layout_marginTop="@dimen/padding_default_half"
+    android:layout_marginTop="@dimen/padding_default"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:elevation="@dimen/cardview_default_elevation">
+    app:cardElevation="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"

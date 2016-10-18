@@ -9,84 +9,53 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/transparent"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_story"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll"
-            app:titleEnabled="false">
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimary"
+            app:expandedTitleMargin="16dp"
+            app:expandedTitleTextAppearance="@style/TextAppearance.ExpandedTitle"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed|enterAlways"
+            app:maxLines="3"
+            app:titleEnabled="true">
 
-            <FrameLayout
+            <ImageView
+                android:id="@+id/img_story_pic"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true">
-
-                <ImageView
-                    android:id="@+id/img_story_pic"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:transitionName="@string/shared_imga_transition_name"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="@drawable/bg_grey_gradual"
-                    android:orientation="vertical"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="16dp">
-
-                    <TextView
-                        android:id="@+id/tv_story_detail_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingMultiplier="1.1"
-                        android:textColor="@color/white"
-                        android:textSize="22sp" />
-
-                    <TextView
-                        android:id="@+id/tv_story_detail_pic_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:textColor="@color/grey_300"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-            </FrameLayout>
+                android:layout_height="240dp"
+                android:fitsSystemWindows="true"
+                android:foreground="@drawable/bg_grey_gradual"
+                android:scaleType="centerCrop"
+                android:transitionName="@string/shared_imga_transition_name" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_story"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
         android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <WebView
             android:id="@+id/webview_story"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <!--<TextView-->
-            <!--android:id="@+id/tv_story_content"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
 
     </android.support.v4.widget.NestedScrollView>
 

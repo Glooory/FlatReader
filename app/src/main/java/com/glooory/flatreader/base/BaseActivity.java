@@ -3,8 +3,12 @@ package com.glooory.flatreader.base;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.glooory.flatreader.R;
+import com.jaeger.library.StatusBarUtil;
 
 /**
  * Created by Glooory on 2016/10/1 0001 16:49.
@@ -17,6 +21,16 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.mContext = this;
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        setStatusBar();
+    }
+
+    protected void setStatusBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimaryDark), 0);
     }
 
     @Override
