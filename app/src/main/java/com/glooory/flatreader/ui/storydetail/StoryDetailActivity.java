@@ -112,7 +112,7 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
     }
 
     private void loadStoryContent(RibaoStoryContentBean bean) {
-        ImageLoader.load(this, mStoryHeadImg, bean.getImage());
+        ImageLoader.load(StoryDetailActivity.this, mStoryHeadImg, bean.getImage());
         mCollapsingToolbar.setTitle(bean.getTitle());
         String url = bean.getShare_url();
         boolean isEmpty = TextUtils.isEmpty(bean.getBody());
