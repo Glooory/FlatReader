@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
@@ -16,6 +17,7 @@ import com.glooory.flatreader.adapter.GankAdapter;
 import com.glooory.flatreader.base.BaseFragment;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.gank.GankBean;
+import com.glooory.flatreader.util.DBUtils;
 
 import java.util.List;
 
@@ -71,7 +73,10 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                // TODO: 2016/10/6 0006 launch gank detail activity
+                ((TextView) view.findViewById(R.id.tv_card_gankitem_title))
+                        .setTextColor(getResources().getColor(R.color.colorSecondaryText));
+                DBUtils.getDB(mContext)
+                        .insertHasRead(Constants.GANK, ((GankBean) baseQuickAdapter.getItem(i)).get_id(), DBUtils.READ);
                 GankDetailActivity.launch(getActivity(),
                         ((GankBean) baseQuickAdapter.getItem(i)).getDesc(),
                         ((GankBean) baseQuickAdapter.getItem(i)).getUrl());

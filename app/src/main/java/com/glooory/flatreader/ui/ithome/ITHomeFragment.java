@@ -8,14 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.ITHomeAdapter;
 import com.glooory.flatreader.base.BaseFragment;
+import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.ithome.ITHomeItemBean;
 import com.glooory.flatreader.ui.ithomecontent.ITContentActivity;
+import com.glooory.flatreader.util.DBUtils;
 
 import java.util.List;
 
@@ -72,6 +75,10 @@ public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                ((TextView) view.findViewById(R.id.tv_ithome_item_title))
+                        .setTextColor(getResources().getColor(R.color.colorSecondaryText));
+                DBUtils.getDB(mContext)
+                        .insertHasRead(Constants.ITHOME, mAdapter.getItem(i).getNewsid(), DBUtils.READ);
                 ITContentActivity.launch(getActivity(), mAdapter.getItem(i));
             }
         });
