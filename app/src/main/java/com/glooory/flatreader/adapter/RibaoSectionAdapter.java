@@ -8,10 +8,12 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.glooory.flatreader.R;
-import com.glooory.flatreader.constants.Constants;
+import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
+import com.glooory.flatreader.greendao.DaoSession;
+import com.glooory.flatreader.greendao.RibaoStoryBeanDao;
 import com.glooory.flatreader.net.ImageLoader;
-import com.glooory.flatreader.util.DBUtils;
+import com.glooory.flatreader.util.GreenDaoUtils;
 
 /**
  * Created by Glooory on 2016/9/30 0030 10:49.
@@ -19,10 +21,13 @@ import com.glooory.flatreader.util.DBUtils;
 
 public class RibaoSectionAdapter extends BaseSectionQuickAdapter<RibaoStoryBean> {
     private Context mContext;
+    private RibaoStoryBeanDao mRibaoDao;
 
     public RibaoSectionAdapter(Context context) {
         super(R.layout.cardview_ribao_item, R.layout.view_section_header_ribao, null);
         this.mContext = context;
+        DaoSession daoSession = ((MyApplication) context.getApplicationContext()).getDaoSession();
+        mRibaoDao = daoSession.getRibaoStoryBeanDao();
     }
 
     @Override
@@ -32,12 +37,13 @@ public class RibaoSectionAdapter extends BaseSectionQuickAdapter<RibaoStoryBean>
 
     @Override
     protected void convert(BaseViewHolder holder, RibaoStoryBean bean) {
+
         if (bean.isMultipic()) {
             holder.getView(R.id.tv_multipic).setVisibility(View.VISIBLE);
         } else {
             holder.getView(R.id.tv_multipic).setVisibility(View.INVISIBLE);
         }
-        if (DBUtils.getDB(mContext).isRead(Constants.RIBAO, bean.getId(), DBUtils.READ)) {
+        if (GreenDaoUtils.isEntityExists(mRibaoDao, RibaoStoryBeanDao.Properties.Id.eq(bean.getId()))) {
             ((TextView) holder.getView(R.id.tv_ribao_item_title))
                     .setTextColor(mContext.getResources().getColor(R.color.colorSecondaryText));
         } else {

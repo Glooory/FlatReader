@@ -86,7 +86,6 @@ public class ITHomePresenter extends BasePresenterImpl implements ITHomeContract
 
     @Override
     public void loadMore() {
-        Logger.d(mLastITDataId);
         Subscription s = RetrofitHelpler.getInstance()
                 .getItHomeApi()
                 .getITHomeMore(ITHomeUtils.getMinNewsId(mLastITDataId))

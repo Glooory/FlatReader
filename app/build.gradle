@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 24
@@ -18,6 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+greendao{
+    schemaVersion 1
+    daoPackage 'com.glooory.flatreader.greendao'
+    targetGenDir 'src/main/java'
 }
 
 dependencies {
@@ -68,4 +75,5 @@ dependencies {
     compile 'com.jaeger.statusbaruitl:library:1.2.6'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.2.2'
+    compile 'org.greenrobot:greendao:3.2.0'
 }

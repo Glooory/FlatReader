@@ -15,10 +15,12 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.ITHomeAdapter;
 import com.glooory.flatreader.base.BaseFragment;
-import com.glooory.flatreader.constants.Constants;
+import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.entity.ithome.ITHomeItemBean;
+import com.glooory.flatreader.greendao.DaoSession;
+import com.glooory.flatreader.greendao.ITHomeItemBeanDao;
 import com.glooory.flatreader.ui.ithomecontent.ITContentActivity;
-import com.glooory.flatreader.util.DBUtils;
+import com.glooory.flatreader.util.GreenDaoUtils;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
     private ITHomeContract.Presenter mPresenter;
     private ITHomeAdapter mAdapter;
     private int mPageSize = 30;
+    private ITHomeItemBeanDao mITHomeDao;
 
     public static ITHomeFragment newInstance() {
         ITHomeFragment fragment = new ITHomeFragment();
@@ -43,6 +46,8 @@ public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new ITHomePresenter(mContext, this);
+        DaoSession daoSession = ((MyApplication) mContext.getApplicationContext()).getDaoSession();
+        mITHomeDao = daoSession.getITHomeItemBeanDao();
     }
 
     @Nullable
@@ -75,10 +80,11 @@ public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                ((TextView) view.findViewById(R.id.tv_ithome_item_title))
-                        .setTextColor(getResources().getColor(R.color.colorSecondaryText));
-                DBUtils.getDB(mContext)
-                        .insertHasRead(Constants.ITHOME, mAdapter.getItem(i).getNewsid(), DBUtils.READ);
+                if (!GreenDaoUtils.isEntityExists(mITHomeDao, ITHomeItemBeanDao.Properties.Newsid.eq(mAdapter.getItem(i).getNewsid()))) {
+                    ((TextView) view.findViewById(R.id.tv_ithome_item_title))
+                            .setTextColor(getResources().getColor(R.color.colorSecondaryText));
+                    GreenDaoUtils.insert(mITHomeDao, mAdapter.getItem(i), ITHomeItemBeanDao.Properties.IdPrimary);
+                }
                 ITContentActivity.launch(getActivity(), mAdapter.getItem(i));
             }
         });

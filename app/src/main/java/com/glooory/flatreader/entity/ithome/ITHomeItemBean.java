@@ -3,9 +3,15 @@ package com.glooory.flatreader.entity.ithome;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.Transient;
+import org.greenrobot.greendao.annotation.Unique;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by Glooory on 2016/10/12 0012 12:25.
@@ -13,36 +19,72 @@ import org.simpleframework.xml.Root;
  */
 
 @Root(name = "item")
+@Entity(
+        nameInDb = "ithome"
+)
 public class ITHomeItemBean implements Parcelable {
 
+    @Id(autoincrement = true)
+    private Long idPrimary;
+
+    @Transient
     @Attribute(name = "t", required = false)
     private String t;
+
+    @Property(nameInDb = "NEWS_ID")
+    @Unique
     @Element(name = "newsid")
     private String newsid;
+
+    @Transient
     @Element(name = "title")
     private String title;
+
+    @Transient
     @Element(name = "c", required = false)
     private String c;
+
+    @Transient
     @Element(required = false, name = "v")
     private String v;
+
+    @Transient
     @Element(name = "url")
     private String url;
+
+    @Transient
     @Element(name = "postdate")
     private String postdate;
+
+    @Transient
     @Element(name = "image")
     private String image;
+
+    @Transient
     @Element(required = false, name = "description")//处理可能为空的情况
     private String description;
+
+    @Transient
     @Element(required = false, name = "hitcount")
     private int hitcount;
+
+    @Transient
     @Element(required = false, name = "commentcount")
     private int commentcount;
+
+    @Transient
     @Element(required = false, name = "forbidcomment")
     private String forbidcomment;
+
+    @Transient
     @Element(required = false, name = "tags")
     private String tags;
+
+    @Transient
     @Element(required = false, name = "z")
     private String z;
+
+    @Transient
     @Element(required = false, name = "cid")
     private int cid;
 
@@ -89,6 +131,12 @@ public class ITHomeItemBean implements Parcelable {
         this.tags = in.readString();
         this.z = in.readString();
         this.cid = in.readInt();
+    }
+
+    @Generated(hash = 1426524516)
+    public ITHomeItemBean(Long idPrimary, String newsid) {
+        this.idPrimary = idPrimary;
+        this.newsid = newsid;
     }
 
     public static final Parcelable.Creator<ITHomeItemBean> CREATOR = new Parcelable.Creator<ITHomeItemBean>() {
@@ -221,5 +269,13 @@ public class ITHomeItemBean implements Parcelable {
 
     public void setT(String t) {
         this.t = t;
+    }
+
+    public Long getIdPrimary() {
+        return this.idPrimary;
+    }
+
+    public void setIdPrimary(Long id) {
+        this.idPrimary = id;
     }
 }

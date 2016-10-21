@@ -2,12 +2,22 @@ package com.glooory.flatreader.entity.gank;
 
 import com.google.gson.Gson;
 
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
+import org.greenrobot.greendao.annotation.Transient;
+import org.greenrobot.greendao.annotation.Unique;
+
 import java.util.List;
 
 /**
  * Created by Glooory on 2016/10/6 0006 12:21.
  */
 
+@Entity(
+        nameInDb = "gank"
+)
 public class GankBean {
 
 
@@ -24,16 +34,49 @@ public class GankBean {
      * who : 代码家
      */
 
+    @Id(autoincrement = true)
+    private Long idPrimary;
+
+    @Property(nameInDb = "NEWS_ID")
+    @Unique
     private String _id;
+
+    @Transient
     private String createdAt;
+
+    @Transient
     private String desc;
+
+    @Transient
     private String publishedAt;
+
+    @Transient
     private String source;
+
+    @Transient
     private String type;
+
+    @Transient
     private String url;
+
+    @Transient
     private boolean used;
+
+    @Transient
     private String who;
+
+    @Transient
     private List<String> images;
+
+    @Generated(hash = 500094545)
+    public GankBean(Long idPrimary, String _id) {
+        this.idPrimary = idPrimary;
+        this._id = _id;
+    }
+
+    @Generated(hash = 1453199415)
+    public GankBean() {
+    }
 
     public static GankBean objectFromData(String str) {
 
@@ -118,5 +161,13 @@ public class GankBean {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public Long getIdPrimary() {
+        return this.idPrimary;
+    }
+
+    public void setIdPrimary(Long id) {
+        this.idPrimary = id;
     }
 }

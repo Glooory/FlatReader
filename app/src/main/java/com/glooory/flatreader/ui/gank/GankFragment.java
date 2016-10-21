@@ -15,9 +15,12 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.GankAdapter;
 import com.glooory.flatreader.base.BaseFragment;
+import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.gank.GankBean;
-import com.glooory.flatreader.util.DBUtils;
+import com.glooory.flatreader.greendao.DaoSession;
+import com.glooory.flatreader.greendao.GankBeanDao;
+import com.glooory.flatreader.util.GreenDaoUtils;
 
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private GankAdapter mAdapter;
+    private GankBeanDao mGankDao;
 
     public static GankFragment newInstance() {
         return new GankFragment();
@@ -40,6 +44,8 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new GankPresenter(mContext, this);
+        DaoSession daoSession = ((MyApplication) mContext.getApplicationContext()).getDaoSession();
+        mGankDao = daoSession.getGankBeanDao();
     }
 
     @Nullable
@@ -73,10 +79,11 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                ((TextView) view.findViewById(R.id.tv_card_gankitem_title))
-                        .setTextColor(getResources().getColor(R.color.colorSecondaryText));
-                DBUtils.getDB(mContext)
-                        .insertHasRead(Constants.GANK, ((GankBean) baseQuickAdapter.getItem(i)).get_id(), DBUtils.READ);
+                if (!GreenDaoUtils.isEntityExists(mGankDao, GankBeanDao.Properties._id.eq(mAdapter.getItem(i).get_id()))) {
+                    ((TextView) view.findViewById(R.id.tv_card_gankitem_title))
+                            .setTextColor(getResources().getColor(R.color.colorSecondaryText));
+                    GreenDaoUtils.insert(mGankDao, mAdapter.getItem(i), GankBeanDao.Properties.IdPrimary);
+                }
                 GankDetailActivity.launch(getActivity(),
                         ((GankBean) baseQuickAdapter.getItem(i)).getDesc(),
                         ((GankBean) baseQuickAdapter.getItem(i)).getUrl());

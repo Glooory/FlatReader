@@ -17,12 +17,14 @@ import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.adapter.RibaoSectionAdapter;
 import com.glooory.flatreader.base.BaseFragment;
-import com.glooory.flatreader.constants.Constants;
-import com.glooory.flatreader.listener.OnSectionChangeListener;
+import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
+import com.glooory.flatreader.greendao.DaoSession;
+import com.glooory.flatreader.greendao.RibaoStoryBeanDao;
+import com.glooory.flatreader.listener.OnSectionChangeListener;
 import com.glooory.flatreader.ui.MainActivity;
 import com.glooory.flatreader.ui.storydetail.StoryDetailActivity;
-import com.glooory.flatreader.util.DBUtils;
+import com.glooory.flatreader.util.GreenDaoUtils;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
     private LinearLayoutManager mLinearLayoutManager;
     private String mCurrentTitle;
     private OnSectionChangeListener mSectionListener;
+    private RibaoStoryBeanDao mRibaoDao;
 
     public static RibaoFragment newInstance() {
         return new RibaoFragment();
@@ -55,6 +58,8 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
             mSectionListener = (OnSectionChangeListener) context;
         }
         mCurrentTitle = context.getString(R.string.title_ribao_latest);
+        DaoSession daoSession = ((MyApplication) context.getApplicationContext()).getDaoSession();
+        mRibaoDao = daoSession.getRibaoStoryBeanDao();
     }
 
     @Override
@@ -94,10 +99,12 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
             public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
-                ((TextView) view.findViewById(R.id.tv_ribao_item_title))
-                        .setTextColor(getResources().getColor(R.color.colorSecondaryText));
-                DBUtils.getDB(mContext)
-                        .insertHasRead(Constants.RIBAO, ((RibaoStoryBean) mAdapter.getItem(i)).getId(), DBUtils.READ);
+                if (!GreenDaoUtils.isEntityExists(mRibaoDao,
+                        RibaoStoryBeanDao.Properties.Id.eq(((RibaoStoryBean) mAdapter.getItem(i)).getId()))) {
+                    ((TextView) view.findViewById(R.id.tv_ribao_item_title))
+                            .setTextColor(getResources().getColor(R.color.colorSecondaryText));
+                    GreenDaoUtils.insert(mRibaoDao, mAdapter.getItem(i), RibaoStoryBeanDao.Properties.IdPrimary);
+                }
                 StoryDetailActivity.launch(getActivity(),
                         String.valueOf(((RibaoStoryBean) mAdapter.getItem(i)).getId()),
                         (ImageView) view.findViewById(R.id.img_card_ribao_item));
