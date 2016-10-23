@@ -5,7 +5,7 @@ import android.content.Context;
 import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ithome.ITHomeItemBean;
 import com.glooory.flatreader.entity.ithome.ITResponse;
-import com.glooory.flatreader.net.RetrofitHelpler;
+import com.glooory.flatreader.net.ITHomeRequest;
 import com.glooory.flatreader.net.SimpleSubscriber;
 import com.glooory.flatreader.util.ITHomeUtils;
 import com.orhanobut.logger.Logger;
@@ -35,10 +35,10 @@ public class ITHomePresenter extends BasePresenterImpl implements ITHomeContract
 
     @Override
     public void loadNewest() {
+        checkNetwork();
         mView.showProgress();
         mLastITDataId = "0";
-        Subscription s = RetrofitHelpler.getInstance()
-                .getItHomeApi()
+        Subscription s = ITHomeRequest.getITHomeApi()
                 .getITHomeNewest()
                 .map(new Func1<ITResponse, List<ITHomeItemBean>>() {
                     @Override
@@ -62,7 +62,7 @@ public class ITHomePresenter extends BasePresenterImpl implements ITHomeContract
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<ITHomeItemBean>>(mContext) {
+                .subscribe(new SimpleSubscriber<List<ITHomeItemBean>>() {
                     @Override
                     public void onCompleted() {
                         mView.dismissProgress();
@@ -86,8 +86,7 @@ public class ITHomePresenter extends BasePresenterImpl implements ITHomeContract
 
     @Override
     public void loadMore() {
-        Subscription s = RetrofitHelpler.getInstance()
-                .getItHomeApi()
+        Subscription s = ITHomeRequest.getITHomeApi()
                 .getITHomeMore(ITHomeUtils.getMinNewsId(mLastITDataId))
                 .map(new Func1<ITResponse, List<ITHomeItemBean>>() {
                     @Override
@@ -111,7 +110,7 @@ public class ITHomePresenter extends BasePresenterImpl implements ITHomeContract
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<ITHomeItemBean>>(mContext) {
+                .subscribe(new SimpleSubscriber<List<ITHomeItemBean>>() {
                     @Override
                     public void onCompleted() {
                         mView.dismissProgress();
@@ -121,7 +120,7 @@ public class ITHomePresenter extends BasePresenterImpl implements ITHomeContract
                     public void onError(Throwable e) {
                         mView.dismissProgress();
                         super.onError(e);
-                        Logger.d(e.getMessage());
+                        mView.showLoadFailed();
                     }
 
                     @Override

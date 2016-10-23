@@ -4,7 +4,7 @@ import com.glooory.flatreader.api.GankApi;
 import com.glooory.flatreader.api.ITHomeApi;
 import com.glooory.flatreader.api.RibaoApi;
 import com.glooory.flatreader.base.MyApplication;
-import com.glooory.flatreader.util.NeworkUtils;
+import com.glooory.flatreader.util.NetworkUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,37 +24,37 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class RetrofitHelpler {
 
-    private static final Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
+    private static final String CACHE_CONTROL = "Cache-Control";
+    private static Interceptor REWRITE_CACHE_CONTROL_INTERCEPTOR = new Interceptor() {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response originalResponse = chain.proceed(chain.request());
-            if (NeworkUtils.isNetworkAvaliable(MyApplication.getInstance())) {
-                int maxAge = 60;  //在线缓存在一分钟内可以读取
+            if (NetworkUtils.isNetworkAvaliable(MyApplication.getInstance())) {
+                int maxAge = 60; //在线缓存在一分钟内可以读取
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, max-age=" + maxAge)
+                        .removeHeader(CACHE_CONTROL)
+                        .header(CACHE_CONTROL, "public, max-age=" + maxAge)
                         .build();
             } else {
-                int maxStale = 60 * 60 * 24 * 28;  //离线时缓存保存四周
+                int maxStale = 60 * 60 * 24 * 7 * 4; //没有网络连接时缓存保存四周
                 return originalResponse.newBuilder()
                         .removeHeader("Pragma")
-                        .removeHeader("Cache-Control")
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                        .removeHeader(CACHE_CONTROL)
+                        .header(CACHE_CONTROL, "public, only-if-cached, max-stale=" + maxStale)
                         .build();
             }
         }
     };
-
-    public static volatile RetrofitHelpler retrofitHelpler;
-    private static File httpCacheDirectory = new File(MyApplication.getInstance().getCacheDir(), "ribaocache");
-    private static int cacheSize = 20 * 1024 * 1024;
-    private static Cache cache = new Cache(httpCacheDirectory, cacheSize);
+    private static File mRibaoHttpCache = new File(MyApplication.getInstance().getCacheDir(), "ribaoCache");
+    private static int cacheSize = 10 * 10 * 1024;
+    private static Cache cache = new Cache(mRibaoHttpCache, cacheSize);
     private static OkHttpClient client = new OkHttpClient.Builder()
             .addNetworkInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
-//            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
+            .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTOR)
             .cache(cache)
             .build();
+    private static RetrofitHelpler retrofitHelpler;
 
     public volatile RibaoApi ribaoApi;
     public volatile GankApi gankApi;

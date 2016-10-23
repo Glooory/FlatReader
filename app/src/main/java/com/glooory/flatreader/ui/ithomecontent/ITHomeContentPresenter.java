@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ithome.ITHomeContentBean;
-import com.glooory.flatreader.net.RetrofitHelpler;
+import com.glooory.flatreader.net.ITHomeRequest;
 import com.glooory.flatreader.net.SimpleSubscriber;
 import com.glooory.flatreader.util.ITHomeUtils;
 import com.orhanobut.logger.Logger;
@@ -29,12 +29,11 @@ public class ITHomeContentPresenter extends BasePresenterImpl implements ITConte
 
     @Override
     public void loadITHomeContent(String newsId) {
-        Subscription s = RetrofitHelpler.getInstance()
-                .getItHomeApi()
+        Subscription s = ITHomeRequest.getITHomeApi()
                 .getNewsContent(ITHomeUtils.getSplitNewsId(newsId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<ITHomeContentBean>(mContext) {
+                .subscribe(new SimpleSubscriber<ITHomeContentBean>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -43,6 +42,7 @@ public class ITHomeContentPresenter extends BasePresenterImpl implements ITConte
                     public void onError(Throwable e) {
                         super.onError(e);
                         Logger.d(e.getMessage());
+                        mView.showLoadFailed();
                     }
 
                     @Override

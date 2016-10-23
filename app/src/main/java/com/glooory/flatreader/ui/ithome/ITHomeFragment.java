@@ -125,6 +125,11 @@ public class ITHomeFragment extends BaseFragment implements SwipeRefreshLayout.O
     }
 
     @Override
+    public void showLoadFailed() {
+        mAdapter.showLoadMoreFailedView();
+    }
+
+    @Override
     public void onLoadMoreRequested() {
         mPresenter.loadMore();
     }

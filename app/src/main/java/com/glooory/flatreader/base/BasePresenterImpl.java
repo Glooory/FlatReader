@@ -1,5 +1,9 @@
 package com.glooory.flatreader.base;
 
+import com.glooory.flatreader.R;
+import com.glooory.flatreader.util.NetworkUtils;
+import com.glooory.flatreader.util.ToastUtils;
+
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -24,6 +28,12 @@ public class BasePresenterImpl implements BasePresenter {
     public void detachView() {
         if (mCompositeSubscription != null && !mCompositeSubscription.isUnsubscribed()) {
             mCompositeSubscription.unsubscribe();
+        }
+    }
+
+    public void checkNetwork() {
+        if (!NetworkUtils.isNetworkAvaliable(MyApplication.getInstance())) {
+            ToastUtils.showToastLong(R.string.network_unavailable);
         }
     }
 }

@@ -70,6 +70,7 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
         new StoryDetailPresenter(mContext, this);
         mStoryId = getIntent().getStringExtra(Constants.STORY_ID);
         initView();
+        checkNetwork();
         mPresenter.loadStory(mStoryId);
     }
 
@@ -145,6 +146,10 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
     @Override
     public void dismissProgress() {
 
+    }
+
+    @Override
+    public void showLoadFailed() {
     }
 
     @Override

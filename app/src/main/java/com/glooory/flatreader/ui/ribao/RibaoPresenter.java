@@ -5,7 +5,7 @@ import android.content.Context;
 import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ribao.RibaoIStoriesBean;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
-import com.glooory.flatreader.net.RetrofitHelpler;
+import com.glooory.flatreader.net.RibaoRequest;
 import com.glooory.flatreader.net.SimpleSubscriber;
 import com.glooory.flatreader.util.DateUtils;
 
@@ -35,9 +35,9 @@ public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.P
 
     @Override
     public void getLatestStories() {
+        checkNetwork();
         mView.showProgress();
-        Subscription s = RetrofitHelpler.getInstance()
-                .getRibaoService()
+        Subscription s = RibaoRequest.getRibaoApi()
                 .getLatest()
                 .map(new Func1<RibaoIStoriesBean, List<RibaoStoryBean>>() {
                     @Override
@@ -63,7 +63,7 @@ public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.P
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<RibaoStoryBean>>(mContext) {
+                .subscribe(new SimpleSubscriber<List<RibaoStoryBean>>() {
                     @Override
                     public void onCompleted() {
                         mView.dismissProgress();
@@ -85,9 +85,7 @@ public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.P
 
     @Override
     public void getPastStories() {
-
-        Subscription s = RetrofitHelpler.getInstance()
-                .getRibaoService()
+        Subscription s = RibaoRequest.getRibaoApi()
                 .getByDate(mTargetDate)
                 .map(new Func1<RibaoIStoriesBean, List<RibaoStoryBean>>() {
                     @Override
@@ -119,7 +117,7 @@ public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.P
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<RibaoStoryBean>>(mContext) {
+                .subscribe(new SimpleSubscriber<List<RibaoStoryBean>>() {
                     @Override
                     public void onCompleted() {
                         mView.dismissProgress();
@@ -129,6 +127,7 @@ public class RibaoPresenter extends BasePresenterImpl implements RibaoContract.P
                     public void onError(Throwable e) {
                         super.onError(e);
                         mView.dismissProgress();
+                        mView.showLoadFailed();
                     }
 
                     @Override

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface GankContract {
 
-    interface GankView extends BaseView<GankPresenter> {
+    interface View extends BaseView<Presenter> {
 
         void setNewGankData(List<GankBean> gankList);
 
@@ -20,7 +20,7 @@ public interface GankContract {
 
     }
 
-    interface GankPresenter extends BasePresenter {
+    interface Presenter extends BasePresenter {
 
         void loadGankDataFirstTime();
 

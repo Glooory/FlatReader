@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ribao.RibaoStoryContentBean;
-import com.glooory.flatreader.net.RetrofitHelpler;
+import com.glooory.flatreader.net.RibaoRequest;
 import com.glooory.flatreader.net.SimpleSubscriber;
 
 import rx.Subscription;
@@ -28,18 +28,18 @@ public class StoryDetailPresenter extends BasePresenterImpl implements StoryDeta
     @Override
     public void loadStory(String storyId) {
 
-        Subscription s = RetrofitHelpler.getInstance()
-                .getRibaoService()
+        Subscription s = RibaoRequest.getRibaoApi()
                 .getStoryContent(storyId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<RibaoStoryContentBean>(mContext) {
+                .subscribe(new SimpleSubscriber<RibaoStoryContentBean>() {
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        super.onError(e);
                     }
 
                     @Override

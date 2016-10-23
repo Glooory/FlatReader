@@ -53,6 +53,7 @@ public class ITContentActivity extends BaseActivity implements ITContentContract
         ButterKnife.bind(this);
         new ITHomeContentPresenter(mContext, this);
         mITHomeItem = getIntent().getParcelableExtra(KEY_NEWS_ITEM);
+        checkNetwork();
         mPresenter.loadITHomeContent(mITHomeItem.getNewsid());
         initView();
     }
@@ -122,6 +123,11 @@ public class ITContentActivity extends BaseActivity implements ITContentContract
 
     @Override
     public void dismissProgress() {
+        mSwipeLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showLoadFailed() {
         mSwipeLayout.setRefreshing(false);
     }
 

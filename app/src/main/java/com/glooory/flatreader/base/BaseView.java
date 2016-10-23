@@ -12,6 +12,6 @@ public interface BaseView<T> {
 
     void dismissProgress();
 
-//    void showError(String errorMessage);
+    void showLoadFailed();
 
 }

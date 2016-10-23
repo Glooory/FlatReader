@@ -6,7 +6,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -29,8 +28,8 @@ import java.util.List;
  */
 
 public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,
-        GankContract.GankView, BaseQuickAdapter.RequestLoadMoreListener{
-    private GankContract.GankPresenter mPresenter;
+        GankContract.View, BaseQuickAdapter.RequestLoadMoreListener{
+    private GankContract.Presenter mPresenter;
     private SwipeRefreshLayout mSwipeLayout;
     private RecyclerView mRecyclerView;
     private GankAdapter mAdapter;
@@ -50,7 +49,7 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mSwipeLayout = (SwipeRefreshLayout) inflater.inflate(R.layout.view_swipe_recycler, container, false);
         initView();
         mPresenter.loadGankDataFirstTime();
@@ -71,14 +70,14 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mAdapter = new GankAdapter(mContext);
 
         //正在加载的footer
-        View loadingFooter = LayoutInflater.from(mContext).inflate(R.layout.view_loading_footer, mRecyclerView, false);
+        android.view.View loadingFooter = LayoutInflater.from(mContext).inflate(R.layout.view_loading_footer, mRecyclerView, false);
         mAdapter.setLoadingView(loadingFooter);
         mAdapter.setOnLoadMoreListener(this);
         mAdapter.openLoadMore(Constants.PAGE_SIZE);
 
         mRecyclerView.addOnItemTouchListener(new OnItemChildClickListener() {
             @Override
-            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+            public void SimpleOnItemChildClick(BaseQuickAdapter baseQuickAdapter, android.view.View view, int i) {
                 if (!GreenDaoUtils.isEntityExists(mGankDao, GankBeanDao.Properties._id.eq(mAdapter.getItem(i).get_id()))) {
                     ((TextView) view.findViewById(R.id.tv_card_gankitem_title))
                             .setTextColor(getResources().getColor(R.color.colorSecondaryText));
@@ -107,7 +106,7 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void setPresenter(GankContract.GankPresenter presenter) {
+    public void setPresenter(GankContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
 
@@ -119,6 +118,11 @@ public class GankFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @Override
     public void dismissProgress() {
         mSwipeLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showLoadFailed() {
+        mAdapter.showLoadMoreFailedView();
     }
 
     @Override

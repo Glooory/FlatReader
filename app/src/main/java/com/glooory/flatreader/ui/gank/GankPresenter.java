@@ -6,7 +6,7 @@ import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.gank.GankBean;
 import com.glooory.flatreader.entity.gank.GankListBean;
-import com.glooory.flatreader.net.RetrofitHelpler;
+import com.glooory.flatreader.net.GankRequest;
 import com.glooory.flatreader.net.SimpleSubscriber;
 
 import java.util.List;
@@ -20,12 +20,12 @@ import rx.schedulers.Schedulers;
  * Created by Glooory on 2016/10/6 0006 12:54.
  */
 
-public class GankPresenter extends BasePresenterImpl implements GankContract.GankPresenter {
+public class GankPresenter extends BasePresenterImpl implements GankContract.Presenter {
     private Context mContext;
-    private GankContract.GankView mView;
+    private GankContract.View mView;
     private int mPage;
 
-    public GankPresenter(Context context, GankContract.GankView view) {
+    public GankPresenter(Context context, GankContract.View view) {
         this.mContext = context;
         this.mView = view;
         mView.setPresenter(this);
@@ -33,10 +33,10 @@ public class GankPresenter extends BasePresenterImpl implements GankContract.Gan
 
     @Override
     public void loadGankDataFirstTime() {
+        checkNetwork();
         mView.showProgress();
         mPage = 1;
-        Subscription s = RetrofitHelpler.getInstance()
-                .getGankService()
+        Subscription s = GankRequest.getGankApi()
                 .httpForGankList(Constants.CATEGORY_ANDROID, Constants.PAGE_SIZE, mPage)
                 .map(new Func1<GankListBean, List<GankBean>>() {
                     @Override
@@ -52,7 +52,7 @@ public class GankPresenter extends BasePresenterImpl implements GankContract.Gan
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<GankBean>>(mContext) {
+                .subscribe(new SimpleSubscriber<List<GankBean>>() {
                     @Override
                     public void onCompleted() {
                         mView.dismissProgress();
@@ -75,8 +75,7 @@ public class GankPresenter extends BasePresenterImpl implements GankContract.Gan
 
     @Override
     public void loadMoreGankData() {
-        Subscription s = RetrofitHelpler.getInstance()
-                .getGankService()
+        Subscription s = GankRequest.getGankApi()
                 .httpForGankList(Constants.CATEGORY_ANDROID, Constants.PAGE_SIZE, mPage)
                 .map(new Func1<GankListBean, List<GankBean>>() {
                     @Override
@@ -92,7 +91,7 @@ public class GankPresenter extends BasePresenterImpl implements GankContract.Gan
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<GankBean>>(mContext) {
+                .subscribe(new SimpleSubscriber<List<GankBean>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -100,6 +99,7 @@ public class GankPresenter extends BasePresenterImpl implements GankContract.Gan
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
+                        mView.showLoadFailed();
                     }
 
                     @Override

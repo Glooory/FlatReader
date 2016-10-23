@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
+import com.glooory.flatreader.util.NetworkUtils;
+import com.glooory.flatreader.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
 
 /**
@@ -47,6 +49,12 @@ public class BaseActivity extends AppCompatActivity {
             finishAfterTransition();
         } else {
             finish();
+        }
+    }
+
+    public void checkNetwork() {
+        if (!NetworkUtils.isNetworkAvaliable(MyApplication.getInstance())) {
+            ToastUtils.showToastLong(R.string.network_unavailable);
         }
     }
 }

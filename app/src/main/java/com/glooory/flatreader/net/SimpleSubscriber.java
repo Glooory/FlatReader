@@ -1,7 +1,5 @@
 package com.glooory.flatreader.net;
 
-import android.content.Context;
-
 import com.glooory.flatreader.util.ErrorInfoUtils;
 import com.glooory.flatreader.util.ToastUtils;
 
@@ -12,11 +10,6 @@ import rx.Subscriber;
  */
 
 public class SimpleSubscriber<T> extends Subscriber<T> {
-    private Context mContext;
-
-    public SimpleSubscriber(Context context) {
-        this.mContext = context;
-    }
 
     @Override
     public void onCompleted() {
@@ -26,7 +19,7 @@ public class SimpleSubscriber<T> extends Subscriber<T> {
     @Override
     public void onError(Throwable e) {
         //同一处理错误回调， 显示Toast
-        ToastUtils.showToast(mContext, ErrorInfoUtils.parseHttpErrorInfo(e));
+        ToastUtils.showToastLong(ErrorInfoUtils.parseHttpErrorInfo(e));
     }
 
     @Override

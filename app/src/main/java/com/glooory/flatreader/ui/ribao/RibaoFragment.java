@@ -128,6 +128,11 @@ public class RibaoFragment extends BaseFragment implements RibaoContract.View,
     }
 
     @Override
+    public void showLoadFailed() {
+        mAdapter.showLoadMoreFailedView();
+    }
+
+    @Override
     public void setNewStoryData(final List<RibaoStoryBean> storyList) {
         mPageSize = storyList.size();
         mAdapter.openLoadMore(mPageSize);
