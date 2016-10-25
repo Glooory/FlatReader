@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:fitsSystemWindows="true"
-                android:foreground="@drawable/bg_grey_gradual"
+                android:foreground="@color/grey_a80_700"
                 android:scaleType="centerCrop"
                 android:transitionName="@string/shared_imga_transition_name" />
 

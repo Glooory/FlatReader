@@ -32,12 +32,14 @@
             android:name=".ui.gank.GankDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".ui.ithomecontent.ITContentActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
-
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

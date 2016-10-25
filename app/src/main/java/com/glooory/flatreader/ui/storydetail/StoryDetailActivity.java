@@ -57,7 +57,7 @@ public class StoryDetailActivity extends BaseActivity implements StoryDetailCont
                     activity, tranImg, activity.getString(R.string.shared_imga_transition_name)
             ).toBundle());
         } else {
-        activity.startActivity(intent);
+            activity.startActivity(intent);
         }
     }
 

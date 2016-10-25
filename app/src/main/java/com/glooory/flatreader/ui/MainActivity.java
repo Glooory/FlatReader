@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
@@ -16,6 +17,8 @@ import com.glooory.flatreader.listener.OnSectionChangeListener;
 import com.glooory.flatreader.ui.gank.GankFragment;
 import com.glooory.flatreader.ui.ithome.ITHomeFragment;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
+import com.glooory.flatreader.ui.settings.SettingsActivity;
+import com.glooory.flatreader.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
@@ -30,6 +33,8 @@ public class MainActivity extends BaseActivity
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawer;
+
+    private long exitTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +104,8 @@ public class MainActivity extends BaseActivity
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_main, ITHomeFragment.newInstance()).commit();
                 break;
-            case R.id.nav_share:
+            case R.id.nav_settings:
+                SettingsActivity.launch(MainActivity.this);
                 break;
         }
 
@@ -116,5 +122,23 @@ public class MainActivity extends BaseActivity
     @Override
     public void onSectionChange(String sectionTitle) {
         getSupportActionBar().setTitle(sectionTitle);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+                mDrawer.closeDrawer(GravityCompat.START);
+            } else {
+                if (System.currentTimeMillis() - exitTime > 2000) {
+                    ToastUtils.showToastShort(R.string.exit_hint);
+                    exitTime = System.currentTimeMillis();
+                } else {
+                    finishSelf();
+                }
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

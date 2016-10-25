@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/key_pref_night_mode"
+        android:summaryOff="@string/off"
+        android:summaryOn="@string/on"
+        android:title="@string/night_mode" />
+
+    <PreferenceCategory android:title="@string/cache_managment">
+        <Preference
+            android:key="@string/key_pref_cache"
+            android:summary="@string/cache_size"
+            android:title="@string/clear_cache" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/more">
+        <Preference
+            android:key="@string/key_pref_about"
+            android:summary="一个野生的程序员"
+            android:title="作者：Glooory" />
+        <Preference
+            android:key="@string/key_pref_suggestion"
+            android:summary="glooorypu@gmail.com"
+            android:title="@string/suggestion" />
+        <Preference
+            android:key="@string/key_pref_upgrade"
+            android:summary="@string/version_format"
+            android:title="@string/check_version" />
+    </PreferenceCategory>
+</PreferenceScreen>
