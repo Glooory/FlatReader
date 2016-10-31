@@ -2,6 +2,7 @@ package com.glooory.flatreader.net;
 
 import com.glooory.flatreader.api.UpdateApi;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -18,9 +19,10 @@ public class UpdateRequest {
             synchronized (UpdateApi.class) {
                 if (updateApi == null) {
                     updateApi = new Retrofit.Builder()
-                            .baseUrl("https://github.com/Glooory/FlatReader/")
+                            .baseUrl("https://raw.githubusercontent.com/Glooory/FlatReader/")
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create())
+                            .client(new OkHttpClient())
                             .build()
                             .create(UpdateApi.class);
                 }

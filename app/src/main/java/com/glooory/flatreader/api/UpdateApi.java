@@ -11,7 +11,7 @@ import rx.Observable;
 
 public interface UpdateApi {
     //检查是否有新版本
-    //https://github.com/Glooory/FlatReader/tree/master/release/updateinfo.json
-    @GET("tree/master/release/updateinfo.json")
+    //https://raw.githubusercontent.com/Glooory/FlatReader/master/release/updateinfo.json
+    @GET("master/release/updateinfo.json")
     Observable<VersionInfoBean> checkUpdateInfo();
 }

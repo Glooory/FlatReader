@@ -30,14 +30,14 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        findPreference(getString(R.string.key_pref_night_mode))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        changeMode();
-                        return true;
-                    }
-                });
+//        findPreference(getString(R.string.key_pref_night_mode))
+//                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference preference) {
+//                        changeMode();
+//                        return true;
+//                    }
+//                });
         findPreference(getString(R.string.key_pref_cache))
                 .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override

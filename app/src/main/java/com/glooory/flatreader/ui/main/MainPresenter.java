@@ -5,6 +5,7 @@ import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.VersionInfoBean;
 import com.glooory.flatreader.net.SimpleSubscriber;
 import com.glooory.flatreader.net.UpdateRequest;
+import com.orhanobut.logger.Logger;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -35,11 +36,13 @@ public class MainPresenter extends BasePresenterImpl implements MainContract.Pre
 
                     @Override
                     public void onError(Throwable e) {
+                        Logger.d(e.getMessage());
 //                        super.onError(e);
                     }
 
                     @Override
                     public void onNext(VersionInfoBean bean) {
+                        Logger.d(bean);
                         if (isNewVersion(bean)) {
                             mView.showUpdateDialog(bean);
                         }
