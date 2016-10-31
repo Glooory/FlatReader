@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity
     public void showUpdateDialog(VersionInfoBean bean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.new_version_available)
-                .setMessage(bean.getReleaseinfo())
+                .setMessage(String.format(getString(R.string.new_version_des), bean.getVersionname(), bean.getReleaseinfo(), bean.getSize()))
                 .setCancelable(false)
                 .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
                     @Override
