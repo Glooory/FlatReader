@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".base.MyApplication"
@@ -40,6 +42,13 @@
             android:name=".ui.settings.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5816d9be6e27a4659e000713"></meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
     </application>
 
 </manifest>

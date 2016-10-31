@@ -11,6 +11,7 @@ import com.glooory.flatreader.R;
 import com.glooory.flatreader.util.NetworkUtils;
 import com.glooory.flatreader.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by Glooory on 2016/10/1 0001 16:49.
@@ -29,6 +30,18 @@ public class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
         setStatusBar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     protected void setStatusBar() {

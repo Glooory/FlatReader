@@ -9,14 +9,33 @@ android {
         applicationId "com.glooory.flatreader"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 1
+        versionCode 101
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            zipAlignEnabled true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        //输出名称为 xxxxx_version_name_flavor.apk 的文件
+                            def fileName = "flatreader_${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+    productFlavors {
+        universal{}
+        coolapk{}
+
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE : name]
         }
     }
 }
@@ -43,7 +62,7 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.9'
     compile 'io.reactivex:rxandroid:1.2.1'
 
-    //Retrofit 框架
+    //Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
@@ -70,10 +89,10 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'me.zhanghai.android.materialprogressbar:library:1.1.7'
     compile 'com.jaeger.statusbaruitl:library:1.2.6'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'net.opacapp:multiline-collapsingtoolbar:1.2.2'
     compile 'org.greenrobot:greendao:3.2.0'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }
