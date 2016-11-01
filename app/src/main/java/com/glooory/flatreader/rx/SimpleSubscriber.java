@@ -1,4 +1,4 @@
-package com.glooory.flatreader.net;
+package com.glooory.flatreader.rx;
 
 import com.glooory.flatreader.util.ErrorInfoUtils;
 import com.glooory.flatreader.util.ToastUtils;

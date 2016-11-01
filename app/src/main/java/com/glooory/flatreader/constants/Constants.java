@@ -13,4 +13,7 @@ public class Constants {
     public static final String CATEGORY_ANDROID = "Android";
     public static final int PAGE_SIZE = 20;
 
+    public static final String DONNOT_REMIND_ANYMORE = "donnot_remind_anymore";
+    public static final String NEWEST_VERSION_CODE = "newest_version_code";
+
 }

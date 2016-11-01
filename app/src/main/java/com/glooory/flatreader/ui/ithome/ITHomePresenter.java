@@ -6,7 +6,7 @@ import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ithome.ITHomeItemBean;
 import com.glooory.flatreader.entity.ithome.ITResponse;
 import com.glooory.flatreader.net.ITHomeRequest;
-import com.glooory.flatreader.net.SimpleSubscriber;
+import com.glooory.flatreader.rx.SimpleSubscriber;
 import com.glooory.flatreader.util.ITHomeUtils;
 import com.orhanobut.logger.Logger;
 

@@ -7,7 +7,7 @@ import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.gank.GankBean;
 import com.glooory.flatreader.entity.gank.GankListBean;
 import com.glooory.flatreader.net.GankRequest;
-import com.glooory.flatreader.net.SimpleSubscriber;
+import com.glooory.flatreader.rx.SimpleSubscriber;
 
 import java.util.List;
 

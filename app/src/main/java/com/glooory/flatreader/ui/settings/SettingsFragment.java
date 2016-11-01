@@ -1,21 +1,30 @@
 package com.glooory.flatreader.ui.settings;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.AlertDialog;
 
 import com.glooory.flatreader.BuildConfig;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.MyApplication;
+import com.glooory.flatreader.constants.Constants;
+import com.glooory.flatreader.entity.VersionInfoBean;
 import com.glooory.flatreader.util.CacheUtils;
+import com.glooory.flatreader.util.SPUtils;
 
 /**
  * Created by Glooory on 2016/10/25 0025 13:47.
  */
 
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment implements SettingsContact.View {
+    private SettingsContact.Presenter mPresenter;
+    private Context mContext;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -25,6 +34,7 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
+        new SettingsPresenter(this);
     }
 
     @Override
@@ -74,6 +84,12 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         showCacheSize(findPreference(getString(R.string.key_pref_cache)));
@@ -92,10 +108,54 @@ public class SettingsFragment extends PreferenceFragment {
     }
 
     private void checkUpgradeInfo() {
-        // TODO: 2016/10/25 0025 check if there was a new version
+        mPresenter.checkUpdate();
     }
 
     private void changeMode() {
         // TODO: 2016/10/25 0025 change to night mode or else
+    }
+
+    @Override
+    public void ShowUpdateDiolog(final VersionInfoBean bean) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                .setTitle(R.string.new_version_available)
+                .setMessage(String.format(getString(R.string.new_version_des), bean.getVersionname(), bean.getReleaseinfo(), bean.getSize()))
+                .setCancelable(false)
+                .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPresenter.startDownload(bean.getDownloadurl());
+                    }
+                })
+                .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = mContext.getSharedPreferences(SPUtils.SP_NAME, Context.MODE_PRIVATE).edit();
+                        editor.putBoolean(Constants.DONNOT_REMIND_ANYMORE, true);
+                        editor.putInt(Constants.NEWEST_VERSION_CODE, bean.getVersioncode());
+                        editor.apply();
+                    }
+                });
+        builder.create().show();
+    }
+
+    @Override
+    public void setPresenter(SettingsContact.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void dismissProgress() {
+
+    }
+
+    @Override
+    public void showLoadFailed() {
+
     }
 }

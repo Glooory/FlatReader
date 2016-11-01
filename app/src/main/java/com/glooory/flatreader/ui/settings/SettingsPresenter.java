@@ -1,26 +1,25 @@
-package com.glooory.flatreader.ui.main;
+package com.glooory.flatreader.ui.settings;
 
 import com.glooory.flatreader.BuildConfig;
+import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.BasePresenterImpl;
-import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.entity.VersionInfoBean;
 import com.glooory.flatreader.rx.SimpleSubscriber;
 import com.glooory.flatreader.net.UpdateRequest;
-import com.glooory.flatreader.util.SPUtils;
-import com.orhanobut.logger.Logger;
+import com.glooory.flatreader.util.ToastUtils;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Glooory on 2016/10/31 0031 19:52.
+ * Created by Glooory on 2016/11/1 0001 10:16.
  */
 
-public class MainPresenter extends BasePresenterImpl implements MainContract.Presenter {
-    private MainContract.View mView;
+public class SettingsPresenter extends BasePresenterImpl implements SettingsContact.Presenter {
+    private SettingsContact.View mView;
 
-    public MainPresenter(MainContract.View view) {
+    public SettingsPresenter(SettingsContact.View view) {
         this.mView = view;
         mView.setPresenter(this);
     }
@@ -38,33 +37,19 @@ public class MainPresenter extends BasePresenterImpl implements MainContract.Pre
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.d(e.getMessage());
-//                        super.onError(e);
+                        super.onError(e);
                     }
 
                     @Override
                     public void onNext(VersionInfoBean bean) {
-                        Logger.d(bean);
-                        if (isShowUpdateDialog(bean)) {
-                            mView.showUpdateDialog(bean);
+                        if (bean.getVersioncode() > BuildConfig.VERSION_CODE) {
+                            mView.ShowUpdateDiolog(bean);
+                        } else {
+                           ToastUtils.showToastShort(R.string.is_newest_version);
                         }
                     }
                 });
         addSubscription(s);
-    }
-
-    private boolean isShowUpdateDialog(VersionInfoBean bean) {
-        boolean isShow = false;
-        int lastShouldUpdateVersion = SPUtils.getLastUpdateVersion(MyApplication.getInstance());
-        int currentVersion = BuildConfig.VERSION_CODE;
-        if (bean.getVersioncode() > currentVersion) {
-            if (lastShouldUpdateVersion < bean.getVersioncode()) {
-                isShow = true;
-            } else {
-                isShow = !SPUtils.isDonnotRemindAnymore(MyApplication.getInstance());
-            }
-        }
-        return isShow;
     }
 
     @Override

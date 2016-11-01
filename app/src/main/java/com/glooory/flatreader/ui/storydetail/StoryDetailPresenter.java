@@ -5,7 +5,7 @@ import android.content.Context;
 import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ribao.RibaoStoryContentBean;
 import com.glooory.flatreader.net.RibaoRequest;
-import com.glooory.flatreader.net.SimpleSubscriber;
+import com.glooory.flatreader.rx.SimpleSubscriber;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;

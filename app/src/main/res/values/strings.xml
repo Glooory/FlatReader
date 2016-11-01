@@ -33,6 +33,7 @@
     <string name="about_author">关于作者</string>
     <string name="suggestion">反馈和建议</string>
     <string name="check_version">检查更新</string>
+    <string name="is_newest_version">已是最新版本</string>
     <string name="new_version_available">更新</string>
     <string name="new_version_des">发现新版本：%1$s，是否更新？\n本次更新内容：\n%2$s\n更新包大小：%3$s</string>
     <string name="download_new_version">下载更新</string>

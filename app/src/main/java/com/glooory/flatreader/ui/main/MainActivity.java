@@ -1,6 +1,8 @@
 package com.glooory.flatreader.ui.main;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,12 +17,14 @@ import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.BaseActivity;
+import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.VersionInfoBean;
 import com.glooory.flatreader.listener.OnSectionChangeListener;
 import com.glooory.flatreader.ui.gank.GankFragment;
 import com.glooory.flatreader.ui.ithome.ITHomeFragment;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
 import com.glooory.flatreader.ui.settings.SettingsActivity;
+import com.glooory.flatreader.util.SPUtils;
 import com.glooory.flatreader.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
 
@@ -29,7 +33,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        OnSectionChangeListener, MainContract.View{
+        OnSectionChangeListener, MainContract.View {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.nav_view)
@@ -154,7 +158,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void showUpdateDialog(VersionInfoBean bean) {
+    public void showUpdateDialog(final VersionInfoBean bean) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.new_version_available)
                 .setMessage(String.format(getString(R.string.new_version_des), bean.getVersionname(), bean.getReleaseinfo(), bean.getSize()))
@@ -162,10 +166,18 @@ public class MainActivity extends BaseActivity
                 .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.startDownload();
+                        mPresenter.startDownload(bean.getDownloadurl());
                     }
                 })
-                .setNegativeButton(R.string.cancle, null);
+                .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor editor = getSharedPreferences(SPUtils.SP_NAME, Context.MODE_PRIVATE).edit();
+                        editor.putBoolean(Constants.DONNOT_REMIND_ANYMORE, true);
+                        editor.putInt(Constants.NEWEST_VERSION_CODE, bean.getVersioncode());
+                        editor.apply();
+                    }
+                });
         builder.create().show();
     }
 

@@ -6,7 +6,7 @@ import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.entity.ribao.RibaoIStoriesBean;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.net.RibaoRequest;
-import com.glooory.flatreader.net.SimpleSubscriber;
+import com.glooory.flatreader.rx.SimpleSubscriber;
 import com.glooory.flatreader.util.DateUtils;
 
 import java.util.List;
