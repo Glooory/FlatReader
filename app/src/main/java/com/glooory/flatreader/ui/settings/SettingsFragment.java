@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import com.glooory.flatreader.BuildConfig;
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.MyApplication;
+import com.glooory.flatreader.callback.PermissionCallback;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.VersionInfoBean;
 import com.glooory.flatreader.service.DownloadService;
@@ -25,6 +26,8 @@ import com.glooory.flatreader.util.SPUtils;
 
 public class SettingsFragment extends PreferenceFragment implements SettingsContact.View {
     private SettingsContact.Presenter mPresenter;
+    private VersionInfoBean mVersionInfo;
+    private PermissionCallback mPermissionCallback;//在这个Fragment动态请求权限似乎有点问题，所以通过接口在Activity中申请
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -109,6 +112,7 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
 
     @Override
     public void ShowUpdateDialog(final VersionInfoBean bean) {
+        mVersionInfo = bean;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.new_version_available)
                 .setMessage(String.format(getString(R.string.new_version_des), bean.getVersionname(), bean.getReleaseinfo(), bean.getSize()))
@@ -116,7 +120,10 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
                 .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        actionDownload(bean);
+                        if (getActivity() != null && getActivity() instanceof SettingsActivity) {
+                            mPermissionCallback = ((PermissionCallback) getActivity());
+                            mPermissionCallback.requestPermission();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
@@ -133,11 +140,10 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
 
     /**
      * 开启服务进行下载
-     * @param bean
      */
-    private void actionDownload(VersionInfoBean bean) {
+    public void actionDownload() {
         DownloadService.launch(getActivity(),
-                bean.getFilename());
+                mVersionInfo.getFilename());
     }
 
     @Override

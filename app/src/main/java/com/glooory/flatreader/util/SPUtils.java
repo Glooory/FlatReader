@@ -22,5 +22,4 @@ public class SPUtils {
         SharedPreferences sp = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         return sp.getInt(Constants.NEWEST_VERSION_CODE, BuildConfig.VERSION_CODE);
     }
-
 }

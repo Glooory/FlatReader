@@ -41,4 +41,8 @@
     <string name="version_format">当前版本：%s</string>
     <string name="app_file_name">FlatReader_%s.apk</string>
     <string name="exit_hint">再按一次退出</string>
+    <string name="external_permission_tip">友情提示</string>
+    <string name="external_permission_des">没有访问手机存储空间权限将无法下载更新，请把访问手机存储空间权限赐予我吧！</string>
+    <string name="external_permission_failed">获取访问手机存储空间权限失败，无法下载更新！</string>
+
 </resources>

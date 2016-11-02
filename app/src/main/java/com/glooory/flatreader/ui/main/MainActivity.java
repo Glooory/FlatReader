@@ -1,9 +1,11 @@
 package com.glooory.flatreader.ui.main;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -28,6 +30,11 @@ import com.glooory.flatreader.ui.settings.SettingsActivity;
 import com.glooory.flatreader.util.SPUtils;
 import com.glooory.flatreader.util.ToastUtils;
 import com.jaeger.library.StatusBarUtil;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionNo;
+import com.yanzhenjie.permission.PermissionYes;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +42,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnSectionChangeListener, MainContract.View {
+    public static final int EXTERNAL_REQUEST_CODE = 409;
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.nav_view)
@@ -43,7 +52,31 @@ public class MainActivity extends BaseActivity
     DrawerLayout mDrawer;
 
     private MainContract.Presenter mPresenter;
+    private VersionInfoBean mVersionInfoBean;
     private long exitTime;
+
+    private RationaleListener mRationaleListener = new RationaleListener() {
+        @Override
+        public void showRequestPermissionRationale(int requestCode, final Rationale rationale) {
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle(R.string.external_permission_tip)
+                    .setMessage(R.string.external_permission_des)
+                    .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            rationale.resume();
+                        }
+                    })
+                    .setNegativeButton("我拒绝", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            rationale.cancel();
+                        }
+                    }).show();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -160,6 +193,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void showUpdateDialog(final VersionInfoBean bean) {
+        this.mVersionInfoBean = bean;
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.new_version_available)
                 .setMessage(String.format(getString(R.string.new_version_des), bean.getVersionname(), bean.getReleaseinfo(), bean.getSize()))
@@ -167,7 +201,11 @@ public class MainActivity extends BaseActivity
                 .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        actionDownload(bean);
+                        AndPermission.with(MainActivity.this)
+                                .requestCode(EXTERNAL_REQUEST_CODE)
+                                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .rationale(mRationaleListener)
+                                .send();
                     }
                 })
                 .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
@@ -186,6 +224,28 @@ public class MainActivity extends BaseActivity
         DownloadService.launch(MainActivity.this,
                 bean.getFilename());
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        AndPermission.onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+    }
+
+    /**
+     * 请求获取 External 权限成功的回调
+     */
+    @PermissionYes(EXTERNAL_REQUEST_CODE)
+    private void getWriteExternalYes() {
+        actionDownload(mVersionInfoBean);
+    }
+
+    /**
+     * 请求读写 External 权限失败的回调
+     */
+    @PermissionNo(EXTERNAL_REQUEST_CODE)
+    private void getWriteExternalNo() {
+        ToastUtils.showToastShort(R.string.external_permission_failed);
+    }
+
 
     @Override
     public void setPresenter(MainContract.Presenter presenter) {

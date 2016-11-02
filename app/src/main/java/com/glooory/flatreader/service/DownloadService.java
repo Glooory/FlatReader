@@ -118,8 +118,8 @@ public class DownloadService extends IntentService {
      */
     private OkHttpClient initOkHttpClient() {
         OkHttpClient.Builder clienBuilder = new OkHttpClient.Builder();
-        clienBuilder.connectTimeout(20, TimeUnit.SECONDS);
-        clienBuilder.readTimeout(20, TimeUnit.SECONDS);
+        clienBuilder.connectTimeout(60, TimeUnit.SECONDS);
+        clienBuilder.readTimeout(60, TimeUnit.SECONDS);
         clienBuilder.networkInterceptors().add(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {

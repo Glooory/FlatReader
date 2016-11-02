@@ -17,7 +17,7 @@
     <PreferenceCategory android:title="@string/more">
         <Preference
             android:key="@string/key_pref_about"
-            android:summary="一个野生的程序员"
+            android:summary="正在努力成为一名野生程序员"
             android:title="作者：Glooory" />
         <Preference
             android:key="@string/key_pref_suggestion"
