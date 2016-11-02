@@ -15,6 +15,7 @@ import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.VersionInfoBean;
+import com.glooory.flatreader.service.DownloadService;
 import com.glooory.flatreader.util.CacheUtils;
 import com.glooory.flatreader.util.SPUtils;
 
@@ -24,7 +25,6 @@ import com.glooory.flatreader.util.SPUtils;
 
 public class SettingsFragment extends PreferenceFragment implements SettingsContact.View {
     private SettingsContact.Presenter mPresenter;
-    private Context mContext;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -79,14 +79,6 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
                         return true;
                     }
                 });
-
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
     }
 
     @Override
@@ -116,27 +108,36 @@ public class SettingsFragment extends PreferenceFragment implements SettingsCont
     }
 
     @Override
-    public void ShowUpdateDiolog(final VersionInfoBean bean) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+    public void ShowUpdateDialog(final VersionInfoBean bean) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.new_version_available)
                 .setMessage(String.format(getString(R.string.new_version_des), bean.getVersionname(), bean.getReleaseinfo(), bean.getSize()))
                 .setCancelable(false)
                 .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.startDownload(bean.getDownloadurl());
+                        actionDownload(bean);
                     }
                 })
                 .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences.Editor editor = mContext.getSharedPreferences(SPUtils.SP_NAME, Context.MODE_PRIVATE).edit();
+                        SharedPreferences.Editor editor = MyApplication.getInstance().getSharedPreferences(SPUtils.SP_NAME, Context.MODE_PRIVATE).edit();
                         editor.putBoolean(Constants.DONNOT_REMIND_ANYMORE, true);
                         editor.putInt(Constants.NEWEST_VERSION_CODE, bean.getVersioncode());
                         editor.apply();
                     }
                 });
         builder.create().show();
+    }
+
+    /**
+     * 开启服务进行下载
+     * @param bean
+     */
+    private void actionDownload(VersionInfoBean bean) {
+        DownloadService.launch(getActivity(),
+                bean.getFilename());
     }
 
     @Override

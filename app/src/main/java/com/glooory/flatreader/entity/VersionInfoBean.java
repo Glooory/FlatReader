@@ -8,18 +8,21 @@ import com.google.gson.Gson;
 
 public class VersionInfoBean {
 
-
     /**
      * versioncode : 104
-     * versionname : 1.0.
-     * downloadurl : www.github.com/xxxx
-     * releaseinfo : 添加检查更新功能
-     * size : 3.2M
+     * versionname : 1.0.4
+     * downloadurl : https://github.com/Glooory/Glooory.github.io/blob/master/releases/FlatReader/flatreader_1.0.1_universal.apk?raw=true
+     * filename : flatreader_1.0.4_universal.apk
+     * releaseinfo : 1.加入下载测试链接
+     2.添加更新
+     3.优化多处用户体验
+     * size : 3.96M
      */
 
     private int versioncode;
     private String versionname;
     private String downloadurl;
+    private String filename;
     private String releaseinfo;
     private String size;
 
@@ -50,6 +53,14 @@ public class VersionInfoBean {
 
     public void setDownloadurl(String downloadurl) {
         this.downloadurl = downloadurl;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     public String getReleaseinfo() {

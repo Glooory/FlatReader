@@ -4,8 +4,8 @@ import com.glooory.flatreader.BuildConfig;
 import com.glooory.flatreader.base.BasePresenterImpl;
 import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.entity.VersionInfoBean;
-import com.glooory.flatreader.rx.SimpleSubscriber;
 import com.glooory.flatreader.net.UpdateRequest;
+import com.glooory.flatreader.rx.SimpleSubscriber;
 import com.glooory.flatreader.util.SPUtils;
 import com.orhanobut.logger.Logger;
 
@@ -44,7 +44,6 @@ public class MainPresenter extends BasePresenterImpl implements MainContract.Pre
 
                     @Override
                     public void onNext(VersionInfoBean bean) {
-                        Logger.d(bean);
                         if (isShowUpdateDialog(bean)) {
                             mView.showUpdateDialog(bean);
                         }
@@ -65,10 +64,5 @@ public class MainPresenter extends BasePresenterImpl implements MainContract.Pre
             }
         }
         return isShow;
-    }
-
-    @Override
-    public void startDownload(String downloadUrl) {
-
     }
 }

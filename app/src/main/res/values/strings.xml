@@ -39,5 +39,6 @@
     <string name="download_new_version">下载更新</string>
     <string name="cancle">取消</string>
     <string name="version_format">当前版本：%s</string>
+    <string name="app_file_name">FlatReader_%s.apk</string>
     <string name="exit_hint">再按一次退出</string>
 </resources>

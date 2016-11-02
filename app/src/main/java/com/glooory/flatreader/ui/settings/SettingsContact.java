@@ -11,13 +11,11 @@ import com.glooory.flatreader.entity.VersionInfoBean;
 public interface SettingsContact {
 
     interface View extends BaseView<Presenter> {
-        void ShowUpdateDiolog(VersionInfoBean bean);
+        void ShowUpdateDialog(VersionInfoBean bean);
     }
 
     interface Presenter extends BasePresenter {
         void checkUpdate();
-
-        void startDownload(String downloadUrl);
     }
 }
 

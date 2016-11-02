@@ -21,7 +21,7 @@ import com.glooory.flatreader.base.MyApplication;
 import com.glooory.flatreader.entity.ribao.RibaoStoryBean;
 import com.glooory.flatreader.greendao.DaoSession;
 import com.glooory.flatreader.greendao.RibaoStoryBeanDao;
-import com.glooory.flatreader.listener.OnSectionChangeListener;
+import com.glooory.flatreader.callback.OnSectionChangeListener;
 import com.glooory.flatreader.ui.main.MainActivity;
 import com.glooory.flatreader.ui.storydetail.StoryDetailActivity;
 import com.glooory.flatreader.util.GreenDaoUtils;

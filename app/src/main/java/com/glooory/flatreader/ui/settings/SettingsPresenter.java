@@ -7,6 +7,7 @@ import com.glooory.flatreader.entity.VersionInfoBean;
 import com.glooory.flatreader.rx.SimpleSubscriber;
 import com.glooory.flatreader.net.UpdateRequest;
 import com.glooory.flatreader.util.ToastUtils;
+import com.orhanobut.logger.Logger;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,23 +38,20 @@ public class SettingsPresenter extends BasePresenterImpl implements SettingsCont
 
                     @Override
                     public void onError(Throwable e) {
+                        Logger.d(e.getMessage());
+                        e.printStackTrace();
                         super.onError(e);
                     }
 
                     @Override
                     public void onNext(VersionInfoBean bean) {
                         if (bean.getVersioncode() > BuildConfig.VERSION_CODE) {
-                            mView.ShowUpdateDiolog(bean);
+                            mView.ShowUpdateDialog(bean);
                         } else {
                            ToastUtils.showToastShort(R.string.is_newest_version);
                         }
                     }
                 });
         addSubscription(s);
-    }
-
-    @Override
-    public void startDownload(String downloadUrl) {
-
     }
 }

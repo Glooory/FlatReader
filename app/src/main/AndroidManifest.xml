@@ -43,6 +43,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
+        <service android:name=".service.DownloadService" />
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5816d9be6e27a4659e000713"></meta-data>

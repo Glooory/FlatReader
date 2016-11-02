@@ -16,7 +16,5 @@ public interface MainContract {
 
     interface Presenter extends BasePresenter {
         void checkUpdate();
-
-        void startDownload(String downloadUrl);
     }
 }

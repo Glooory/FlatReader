@@ -19,7 +19,7 @@ public class UpdateRequest {
             synchronized (UpdateApi.class) {
                 if (updateApi == null) {
                     updateApi = new Retrofit.Builder()
-                            .baseUrl("https://raw.githubusercontent.com/Glooory/FlatReader/")
+                            .baseUrl("https://raw.githubusercontent.com/Glooory/Glooory.github.io/master/releases/FlatReader/")
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create())
                             .client(new OkHttpClient())

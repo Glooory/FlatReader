@@ -17,9 +17,10 @@ import android.view.MenuItem;
 
 import com.glooory.flatreader.R;
 import com.glooory.flatreader.base.BaseActivity;
+import com.glooory.flatreader.callback.OnSectionChangeListener;
 import com.glooory.flatreader.constants.Constants;
 import com.glooory.flatreader.entity.VersionInfoBean;
-import com.glooory.flatreader.listener.OnSectionChangeListener;
+import com.glooory.flatreader.service.DownloadService;
 import com.glooory.flatreader.ui.gank.GankFragment;
 import com.glooory.flatreader.ui.ithome.ITHomeFragment;
 import com.glooory.flatreader.ui.ribao.RibaoFragment;
@@ -166,7 +167,7 @@ public class MainActivity extends BaseActivity
                 .setPositiveButton(R.string.download_new_version, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mPresenter.startDownload(bean.getDownloadurl());
+                        actionDownload(bean);
                     }
                 })
                 .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
@@ -179,6 +180,11 @@ public class MainActivity extends BaseActivity
                     }
                 });
         builder.create().show();
+    }
+
+    private void actionDownload(VersionInfoBean bean) {
+        DownloadService.launch(MainActivity.this,
+                bean.getFilename());
     }
 
     @Override
