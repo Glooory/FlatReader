@@ -74,7 +74,7 @@ public class DownloadService extends IntentService {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder();
         }
-        retrofit.baseUrl("https://raw.githubusercontent.com/Glooory/Glooory.github.io/master/releases/FlatReader/")
+        retrofit.baseUrl("http://glooory.com/releases/FlatReader/")
                 .client(initOkHttpClient())
                 .build()
                 .create(UpdateApi.class)
@@ -138,9 +138,9 @@ public class DownloadService extends IntentService {
      */
     public void initNotification() {
         builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.flater_reader_notification_icon)
                 .setContentText("0%")
-                .setContentTitle("FlatReader 更新")
+                .setContentTitle("正在下载 FlatReader 更新")
                 .setProgress(100, 0, false);
         notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFY_ID, builder.build());
