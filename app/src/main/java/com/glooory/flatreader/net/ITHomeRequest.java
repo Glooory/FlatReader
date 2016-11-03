@@ -61,6 +61,7 @@ public class ITHomeRequest {
 
     private static OkHttpClient client = new OkHttpClient.Builder()
             .addInterceptor(REWRITE_CACHE_CONTROL_INTERCEPTER)
+            .connectTimeout(20, TimeUnit.SECONDS)
             .cache(cache)
             .build();
 

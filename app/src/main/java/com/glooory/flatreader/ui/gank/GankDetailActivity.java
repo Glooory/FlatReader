@@ -3,6 +3,7 @@ package com.glooory.flatreader.ui.gank;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -83,7 +85,14 @@ public class GankDetailActivity extends BaseActivity {
                 mProgressBar.setProgress(newProgress);
             }
         });
-        mWebview.setWebViewClient(new WebViewClient());
+        mWebview.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                //handler.cancel(); //默认的处理方式，WebView变成空白页
+                handler.proceed(); //接受证书
+                //handleMessage(Message msg); //其他处理
+            }
+        });
     }
 
     @Override

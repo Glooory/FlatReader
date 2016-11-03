@@ -42,6 +42,7 @@ public class ITHomeContentPresenter extends BasePresenterImpl implements ITConte
                     public void onError(Throwable e) {
                         super.onError(e);
                         Logger.d(e.getMessage());
+                        e.printStackTrace();
                         mView.showLoadFailed();
                     }
 

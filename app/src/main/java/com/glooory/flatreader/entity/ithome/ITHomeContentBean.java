@@ -8,7 +8,7 @@ import org.simpleframework.xml.Root;
  * Created by Glooory on 2016/10/13 0013 10:11.
  */
 
-@Root(name = "rss")
+@Root(name = "rss", strict = false)
 public class ITHomeContentBean {
 
     @Path("channel/item")
@@ -20,15 +20,6 @@ public class ITHomeContentBean {
     @Path("channel/item")
     @Element(name = "detail")
     private String detail;
-    @Path("channel/item")
-    @Element(required = false,name = "z")
-    private String z;
-    @Path("channel/item")
-    @Element(required = false,name = "reward")
-    private String reward;
-    @Path("channel/item")
-    @Element(required = false,name = "tags")
-    private String tags;
 
     public String getNewssource() {
         return newssource;
