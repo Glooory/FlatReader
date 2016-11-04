@@ -46,7 +46,7 @@ greendao{
     targetGenDir 'src/main/java'
 }
 
-ext.supportLibVersion = '24.2.0'
+ext.supportLibVersion = '25.0.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
