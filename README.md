@@ -6,19 +6,19 @@
 
 
 
- <img src="/screenshot/zhihuribao.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+ <img src="/screenshot/zhihuribao.png" width = "360" height = "640" align=left hspace="16" vspace="16"/>
 
- <img src="/screenshot/zhihuribao_detail.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+ <img src="/screenshot/zhihuribao_detail.png" width = "360" height = "640" align=right hspace="16" vspace="16"/>  
 
- <img src="/screenshot/ithome_detail.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+ <img src="/screenshot/ithome_detail.png" width = "360" height = "640" align=left hspace="16" vspace="16"/>
 
- <img src="/screenshot/menu.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+ <img src="/screenshot/menu.png" width = "360" height = "640" align=right hspace="16" vspace="16"/>
 
   
 
 #### 体验
 
-<img src="/screenshot/menu.png" width = "200" height = "200" align=center hspace="16" vspace="16"/>or 戳我下载 APK ](http://glooory.com/releases/FlatReader/flatreader_1.0.1_universal.apk)
+<img src="/screenshot/flatreader.png" width = "200" height = "200" align=center hspace="16" vspace="16"/>or [戳我下载 APK ](http://glooory.com/releases/FlatReader/flatreader_1.0.1_universal.apk)
 
 #### 主要应用到的知识点
 
