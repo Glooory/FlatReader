@@ -2,13 +2,23 @@
 
 一款简单的资讯阅读应用，内容包括知乎日报、干货集中营(仅 Android 方面)、IT之家。  
 
-是自己的一个简单的练手项目，基于 MVP + RxJava + Retrofit + Glide + greenDAO 
+是自己的一个简单的练手项目，基于 MVP + RxJava + Retrofit + Glide + greenDAO   
 
-<img src="/screenshot/zhihuribao.png" width = "33%" /><img src="/screenshot/zhihuribao_detail.png" width = "33%" /><img src="/screenshot/ithome_detail.png" width = "33%" /><img src="/screenshot/menu.png" width = "33%" />
+
+
+ <img src="/screenshot/zhihuribao.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+
+ <img src="/screenshot/zhihuribao_detail.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+
+ <img src="/screenshot/ithome_detail.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+
+ <img src="/screenshot/menu.png" width = "360" height = "640" align=center hspace="16" vspace="16"/>
+
+  
 
 #### 体验
 
-<img src="/screenshot/flatreader.png" width = "50%" />or [戳我下载 APK ](http://glooory.com/releases/FlatReader/flatreader_1.0.1_universal.apk)
+<img src="/screenshot/menu.png" width = "200" height = "200" align=center hspace="16" vspace="16"/>or 戳我下载 APK ](http://glooory.com/releases/FlatReader/flatreader_1.0.1_universal.apk)
 
 #### 主要应用到的知识点
 
