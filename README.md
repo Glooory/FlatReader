@@ -5,13 +5,13 @@
 是自己的一个简单的练手项目，基于 MVP + RxJava + Retrofit + Glide + greenDAO   
 
 <figure class="half">
-​    <img src="/screenshot/zhihuribao.png" width = "360" height = "640" hspace="16" vspace="16"/>
-​    <img src="/screenshot/zhihuribao_detail.png" width = "360" height = "640" hspace="16" vspace="16"/>
+​    <img src="/screenshot/zhihuribao.png" width = "270" hspace="16" vspace="16"/>
+​    <img src="/screenshot/zhihuribao_detail.png" width = "270" hspace="16" vspace="16"/>
 </figure>
 
 <figure class="half">
-​    <img src="/screenshot/ithome_detail.png" width = "360" height = "640" hspace="16" vspace="16"/>
-​    <img src="/screenshot/menu.png" width = "360" height = "640" hspace="16" vspace="16"/>
+​    <img src="/screenshot/ithome_detail.png" width = "270" hspace="16" vspace="16"/>
+​    <img src="/screenshot/menu.png" width = "270" hspace="16" vspace="16"/>
 </figure>
 
 #### 体验
