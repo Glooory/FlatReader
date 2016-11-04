@@ -4,11 +4,11 @@
 
 是自己的一个简单的练手项目，基于 MVP + RxJava + Retrofit + Glide + greenDAO 
 
-![知乎日报][1]![知乎日报][2]![IT之家][3]![侧滑菜单][4]  
+<img src="/screenshot/zhihuribao.png" width = "33%" /><img src="/screenshot/zhihuribao_detail.png" width = "33%" /><img src="/screenshot/ithome_detail.png" width = "33%" /><img src="/screenshot/menu.png" width = "33%" />
 
 #### 体验
 
-[戳我下载 APK ](http://glooory.com/releases/FlatReader/flatreader_1.0.1_universal.apk)  or ![FlatReader][5]
+<img src="/screenshot/flatreader.png" width = "50%" />or [戳我下载 APK ](http://glooory.com/releases/FlatReader/flatreader_1.0.1_universal.apk)
 
 #### 主要应用到的知识点
 
@@ -60,12 +60,6 @@ limitations under the License.
 ```
 
 
-
-[1]:/screenshot/zhihuribao.png
-[2]:/screenshot/zhihuribao_detail.png
-[3]:/screenshot/ithome_detail.png
-[4]:/screenshot/menu.png
-[5]:/screenshot/flatreader.png
 
 
 
