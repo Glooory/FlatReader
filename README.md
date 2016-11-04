@@ -61,15 +61,11 @@ limitations under the License.
 
 
 
-[1][/screenshot/zhihuribao.png]
-
-[2][/screenshot/zhihuribao_detail.png]
-
-[3][/screenshot/ithome_detail.png]
-
-[4][/screenshot/menu.png]
-
-[5][/screenshot/flatreader.png]
+[1]:/screenshot/zhihuribao.png
+[2]:/screenshot/zhihuribao_detail.png
+[3]:/screenshot/ithome_detail.png
+[4]:/screenshot/menu.png
+[5]:/screenshot/flatreader.png
 
 
 
