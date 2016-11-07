@@ -74,7 +74,7 @@ public class DownloadService extends IntentService {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder();
         }
-        retrofit.baseUrl("http://glooory.com/releases/FlatReader/")
+        retrofit.baseUrl("http://glooory.com/apps/FlatReader/")
                 .client(initOkHttpClient())
                 .build()
                 .create(UpdateApi.class)

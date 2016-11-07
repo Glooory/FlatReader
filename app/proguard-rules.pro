@@ -111,6 +111,10 @@
 
 #---------------------------------1.实体类---------------------------------
 -keep class com.glooory.flatreader.entity.** { *; }
+-keep class com.glooory.flatreader.ui.main.MainActivity {
+    void getWriteExternalYes();
+    void getWriteExternalNo();
+}
 
 #---------------------------------2.第三方包-------------------------------
 #retrofit2
@@ -210,3 +214,6 @@
 
 -dontwarn com.orhanobut.logger.**
 -keep class com.orhanobut.logger.** { *; }
+
+-dontwarn com.yanzhenjie.permission.**
+-keep class com.yanzhenjie.permission.** { *; }
